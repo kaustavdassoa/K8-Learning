@@ -1,16 +1,23 @@
 # LAB : Practice Test - Pods
 
+**Important kubeCLT commands**
+
+list pods
 ```
 kubectl get pods
 ```
+Discribe a pod 
+```
+kubectl describe pod <pod-name>
+```
+create a pod with ngix image 
 
 ```
 kubectl run ngix --image=nginx 
+kubectl run redis --image=redis123
 ```
 
-```
-kubectl describe pod newpods-h7b7b 
-```
+
 
 ```
 kubectl get pods -o wide
@@ -33,8 +40,10 @@ ngix            1/1     Running            0          3m22s
 webapp          1/2     ImagePullBackOff   0          27s
 ````
 
-
+```
 kubectl describe pod webapp 
+
+## Output 
 
 Name:             webapp
 Namespace:        default
@@ -110,10 +119,9 @@ Events:
   
 NOTE: Total number of running pods/Total number of pods
 
+```
 
-```
-kubectl run redis --image=redis123
-```
+**Edit Pods**
 
 ```
 kubectl set image (-f FILENAME | TYPE NAME) CONTAINER_NAME_1=CONTAINER_IMAGE_1 ... CONTAINER_NAME_N=CONTAINER_IMAGE_N
@@ -203,9 +211,7 @@ new-replica-set-pbrlq   0/1     ImagePullBackOff   0          4m22s
 
 ```
 kubectl get pod new-replica-set-2r2rv 
-```
 
-```
 NAME                    READY   STATUS             RESTARTS   AGE
 new-replica-set-2r2rv   0/1     ImagePullBackOff   0          4m34s
 ```
@@ -214,6 +220,7 @@ new-replica-set-2r2rv   0/1     ImagePullBackOff   0          4m34s
 kubectl describe pod new-replica-set-2r2rv 
 ```
 
+```
 Name:             new-replica-set-2r2rv
 Namespace:        default
 Priority:         0
@@ -272,14 +279,15 @@ Events:
   Warning  Failed     3m17s (x4 over 4m42s)  kubelet            Error: ErrImagePull
   Warning  Failed     3m5s (x6 over 4m42s)   kubelet            Error: ImagePullBackOff
   Normal   BackOff    2m52s (x7 over 4m42s)  kubelet            Back-off pulling image "busybox777"
+```  
   
-  
-k delete pods new-replica-set-2r2rv new-replica-set-hgbgm new-replica-set-lpvsm new-replica-set-pbrlq
+```  
+kubectl delete pods new-replica-set-2r2rv new-replica-set-hgbgm new-replica-set-lpvsm new-replica-set-pbrlq
+```
 
 
 
-
-
+```
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
@@ -297,27 +305,28 @@ spec:
       containers:
       - name: nginx
         image: nginx
-        
-        
-k delete rs replicaset-1 replicaset-2 
+```        
+```        
+kubectl delete rs replicaset-1 replicaset-2 
+
+
 replicaset.apps "replicaset-1" deleted
 replicaset.apps "replicaset-2" deleted        
+```
 
-
-
+```
 kubectl set image rs new-replica-set busybox-container=busybox  
 
 NOTE : After updating the rs image, one needs to delete the pods to get the pods recreated with new image  
+```
 
-
-
-
+```
 kubectl scale rs new-replica-set --replicas=5
+```
 
-
-
+```
 kubectl edit replicaset new-replica-set 
-
+```
 
 
 ### Difference between ReplicaSet and Deployment
@@ -333,6 +342,7 @@ Deployment maintains a revision history and allows easy rollback to previous ver
 
 
 #### ReplicaSet example
+```
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
@@ -350,7 +360,7 @@ spec:
       containers:
       - name: php-redis
         image: gcr.io/google_samples/gb-frontend:v1
-        
+```        
         
 #### Deployment example
 apiVersion: apps/v1
@@ -649,6 +659,7 @@ spec:
 
 Quick Note : Security context can be set at the container level OR at the pod level 
 ```yaml
+
 	spec:
 		securityContext:
 			runAsUser: 1000
@@ -1180,11 +1191,138 @@ spec:
 
 # LAB Practice Test - Readiness and Liveness Probes
 
+```yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: simple-webapp-2
+  name: simple-webapp-2	
+spec:
+  containers:
+  - image: kodekloud/webapp-delayed-start
+    name: simple-webapp-2
+	readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+```
+
+
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: simple-webapp-1
+  name: simple-webapp-1	
+spec:
+  containers:
+  - image: kodekloud/webapp-delayed-start
+    name: simple-webapp-1
+	readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+	livenessProbe:
+      httpGet:
+        path: /live
+        port: 8080
+	periodSeconds: 1
+	initialDelaySeconds: 80
+--
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: simple-webapp-2
+  name: simple-webapp-2	
+spec:
+  containers:
+  - image: kodekloud/webapp-delayed-start
+    name: simple-webapp-2
+	readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+	livenessProbe:
+      httpGet:
+        path: /live
+        port: 8080
+	periodSeconds: 1
+	initialDelaySeconds: 80
+
+```
+
+```
+kubectl expose pod simple-webapp-1 --port=8080 --name=webapp-service-1 --type=LoadBalancer
+kubectl expose pod simple-webapp-1 --port=8080 --name=webapp-service-1 --type=LoadBalancer
+```
+
+
+
+# LAB Practice Test - Container Logging
+
+```
+kubectl logs <pod-name>
+```
+
+```
+kubectl logs <pod-name> | grep 'serach string'
+```
+
+```
+kubectl logs -f <pod-name>
+```
+
+
+# LAB Practice Test - Monitoring
+
+
+Deploying Metrics Server 
+
+```yaml 
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+```bash
+serviceaccount/metrics-server created
+clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+clusterrole.rbac.authorization.k8s.io/system:metrics-server created
+rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
+clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
+clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
+service/metrics-server created
+deployment.apps/metrics-server created
+apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+
+```
 
 
 
 
+Get Node Metrics 
+```
+kubectl top node
+```
+```
+NAME           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+controlplane   282m         1%     907Mi           1%        
+node01         27m          0%     185Mi           0%   
+```
 
+```
+kubectl top pod
+```
+
+```
+NAME       CPU(cores)   MEMORY(bytes)   
+elephant   21m          30Mi            
+lion       1m           16Mi            
+rabbit     147m         250Mi     
+```
 
 
 # LAB Practice Test - Services
