@@ -1324,6 +1324,243 @@ lion       1m           16Mi
 rabbit     147m         250Mi     
 ```
 
+# LAB Practice Test - Labels, Selectors and Annotations
+
+Command to get all the pods with label env=dev.
+
+```
+kubectl get pods -l env=dev
+```
+
+Command to get all the pods with label env=prod.
+```
+kubectl get all -l env=prod
+```
+
+Command to get all the pods with label [env=prod,bu=finance,tier=frontend] mutiple labels.
+
+```
+kubectl get pod -l env=prod,bu=finance,tier=frontend
+```
+
+ReplicaSet defination , replica-set pod teamplate label should match with match ith slector label.
+
+```json 
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+   name: replicaset-1
+spec:
+   replicas: 2
+   selector:
+      matchLabels:
+        tier: front-end
+   template:
+     metadata:
+       labels:
+        tier: front-end
+     spec:
+       containers:
+       - name: nginx
+         image: nginx
+```
+
+
+
+# LAB Practice Test - Rolling Updates & Rollbacks
+
+```
+kubectl set image deployment/frontend simple-webapp=kodekloud/webapp-color:v2 --record=true 
+```
+NOTE : record flag is getting deplicated 
+
+```
+kubectl rollout status deployment/frontend
+```
+
+```
+kubectl rollout history deployment/frontend
+```
+
+```
+kubectl describe deployment frontend
+```
+
+```
+Name:                   frontend
+Namespace:              default
+CreationTimestamp:      Sat, 29 Mar 2025 08:46:40 +0000
+Labels:                 <none>
+Annotations:            deployment.kubernetes.io/revision: 2
+                        kubernetes.io/change-cause: kubectl set image deployment/frontend simple-webapp=kodekloud/webapp-color:v2 --record=true
+Selector:               name=webapp
+Replicas:               4 desired | 4 updated | 4 total | 4 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        20
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  name=webapp
+  Containers:
+   simple-webapp:
+    Image:         kodekloud/webapp-color:v2
+    Port:          8080/TCP
+    Host Port:     0/TCP
+    Environment:   <none>
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  frontend-6765b99794 (0/0 replicas created)
+NewReplicaSet:   frontend-854b57fbbf (4/4 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  10m    deployment-controller  Scaled up replica set frontend-6765b99794 from 0 to 4
+  Normal  ScalingReplicaSet  3m17s  deployment-controller  Scaled up replica set frontend-854b57fbbf from 0 to 1
+  Normal  ScalingReplicaSet  3m17s  deployment-controller  Scaled down replica set frontend-6765b99794 from 4 to 3
+  Normal  ScalingReplicaSet  3m17s  deployment-controller  Scaled up replica set frontend-854b57fbbf from 1 to 2
+  Normal  ScalingReplicaSet  2m56s  deployment-controller  Scaled down replica set frontend-6765b99794 from 3 to 1
+  Normal  ScalingReplicaSet  2m56s  deployment-controller  Scaled up replica set frontend-854b57fbbf from 2 to 4
+  Normal  ScalingReplicaSet  2m34s  deployment-controller  Scaled down replica set frontend-6765b99794 from 1 to 0
+```
+
+Note : 
+StrategyType = RollingUpdate | Replicas=**4(total)** | **4(desired)**
+RollingUpdateStrategy= 25% max unavailable | 25% max surge (**25% of 4 i.e 1 pod**)
+
+```
+kubectl set image deployment/frontend simple-webapp=kodekloud/webapp-color:v3
+```
+
+
+# LAB Practice Test - Deployment strategies
+
+```
+kubectl get service -o wide
+NAME               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE     SELECTOR
+frontend-service   NodePort    172.20.154.102   <none>        8080:30080/TCP   78s     app=frontend
+kubernetes         ClusterIP   172.20.0.1       <none>        443/TCP          8m57s   <none>
+```
+
+**Blue-Green Deployment Strategy**
+
+
+
+** Canary  Deployment Strategy**
+
+Have service to send request to both deployment , once the new deployment is tested successfully scale out the deployment and scale down the old deploument.
+
+
+Scale down 
+```
+kubectl scale --current-replicas=5 --replicas=4 deployment/frontend
+kubectl scale --current-replicas=2 --replicas=1 deployment/frontend-v2
+```
+
+```
+kubectl get deploy
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+frontend      4/4     4            4           10m
+frontend-v2   1/1     1            1           8m7s
+```
+
+```
+controlplane ~ ➜  k get deploy
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+frontend      0/0     0            0           12m
+frontend-v2   5/5     5            5           10m
+```
+
+# LAB Practice Test - Jobs & CronJobs
+Job 
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: throw-dice-job
+spec:
+  completions: 1     # exits when 1 container is sucessful 
+  template:
+    spec:
+      containers:
+      - name: throw-dice-job
+        image: kodekloud/throw-dice
+      restartPolicy: Never
+```  
+
+Job Defination 
+
+```yaml  
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: throw-dice-job
+spec:
+  completions: 2   # exits when 2 container is sucessful 
+  template:
+    spec:
+      containers:
+      - name: throw-dice-job
+        image: kodekloud/throw-dice
+      restartPolicy: Never
+```  
+	  
+Job Defination  - 3
+	  
+```yaml 
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: throw-dice-job
+spec:
+  completions: 3       # exits when 3 container is sucessful 
+  parallelism: 3       # runs 3 container in parallel  
+  template:
+    spec:
+      containers:
+      - name: throw-dice-job
+        image: kodekloud/throw-dice
+      restartPolicy: Never
+
+
+```  
+
+Command to force recreate the jobs from a file 
+
+```bash
+
+k replace --force -f throw-dice-job.yaml
+
+```
+
+
+CronJob - job that gets trigger in specific time
+
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: throw-dice-cron-job
+spec:
+  schedule: "30 21 * * *"
+  jobTemplate:
+    spec:
+      completions: 3
+      parallelism: 3
+      template:
+        spec:
+          containers:
+            - name: throw-dice-job
+              image: kodekloud/throw-dice
+          restartPolicy: Never
+```
+
 
 # LAB Practice Test - Services
 
