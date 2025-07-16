@@ -1595,3 +1595,705 @@ spec:
   selector:
     name : simple-webapp
 ```  
+
+
+
+# LAB Practice Test - Ingress Networking - 1
+
+```
+apiVersion: v1
+items:
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    creationTimestamp: "2025-06-17T10:44:29Z"
+    generation: 1
+    name: ingress-wear-watch
+    namespace: app-space
+    resourceVersion: "865"
+    uid: ecffaa56-fb31-4072-8a89-1fd4332c0e03
+  spec:
+    rules:
+    - http:
+        paths:
+        - backend:
+            service:
+              name: wear-service
+              port:
+                number: 8080
+          path: /wear
+          pathType: Prefix
+        - backend:
+            service:
+			              name: wear-service
+              port:
+                number: 8080
+          path: /wear
+          pathType: Prefix
+        - backend:
+            service:
+              name: video-service
+              port:
+                number: 8080
+          path: /stream
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - ip: 172.20.71.208
+kind: List
+metadata:
+  resourceVersion: ""
+```
+
+
+```
+apiVersion: v1
+items:
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    creationTimestamp: "2025-06-17T10:44:29Z"
+    generation: 1
+    name: ingress-wear-watch
+    namespace: app-space
+    resourceVersion: "865"
+    uid: ecffaa56-fb31-4072-8a89-1fd4332c0e03
+  spec:
+    rules:
+    - http:
+        paths:
+        - backend:
+            service:
+              name: wear-service
+              port:
+                number: 8080
+          path: /wear
+		  pathType: Prefix
+        - backend:
+            service:
+              name: video-service
+              port:
+                number: 8080
+          path: /stream
+          pathType: Prefix
+        - backend:
+            service:
+              name: food-service
+              port:
+                number: 8080
+          path: /eat
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - ip: 172.20.71.208
+kind: List
+metadata:
+  resourceVersion: ""
+```
+critical-space/Pay App
+
+```
+apiVersion: v1
+kind: List
+items:
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    name: critical-ingress
+    namespace: critical-space
+  spec:
+    rules:
+    - http:
+        paths:
+        - backend:
+            service:
+              name: pay-service
+              port:
+                number: 8282
+          path: /pay
+          pathType: Prefix
+```
+
+```bash
+kubctl create ingress ingress-pay -n critical-space --rule="/pay=pay-service:8282"
+```
+
+
+Without the rewrite-target option, this is what would happen:
+
+http://<ingress-service>:<ingress-port>/watch --> http://<watch-service>:<port>/watch
+
+http://<ingress-service>:<ingress-port>/wear --> http://<wear-service>:<port>/wear
+
+To fix that we want to "ReWrite" the URL when the request is passed on to the watch or wear applications. 
+
+annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /  # this will rewrite the backend URL and remove the /pay when forwarding the request.
+	  
+With the rewrite-target
+
+http://<ingress-service>:<ingress-port>/watch --> http://<watch-service>:<port>
+http://<ingress-service>:<ingress-port>/pay --> http://<pay-service>:<port>
+	  
+controlplane ~ ➜  k describe clusterrolebindings ingress-nginx -n=ingress-nginx
+Name:         ingress-nginx
+Labels:       app.kubernetes.io/instance=ingress-nginx
+              app.kubernetes.io/managed-by=Helm
+              app.kubernetes.io/name=ingress-nginx
+              app.kubernetes.io/part-of=ingress-nginx
+              app.kubernetes.io/version=1.1.2
+              helm.sh/chart=ingress-nginx-4.0.18
+Annotations:  <none>
+Role:
+  Kind:  ClusterRole
+  Name:  ingress-nginx
+Subjects:
+  Kind            Name           Namespace
+  ----            ----           ---------
+  ServiceAccount  ingress-nginx  ingress-nginx
+  
+controlplane ~ ✖ k describe clusterrolebindings ingress-nginx-admission -n=ingress-nginx
+Name:         ingress-nginx-admission
+Labels:       app.kubernetes.io/component=admission-webhook
+              app.kubernetes.io/instance=ingress-nginx
+              app.kubernetes.io/managed-by=Helm
+              app.kubernetes.io/name=ingress-nginx
+              app.kubernetes.io/part-of=ingress-nginx
+              app.kubernetes.io/version=1.1.2
+              helm.sh/chart=ingress-nginx-4.0.18
+Annotations:  helm.sh/hook: pre-install,pre-upgrade,post-install,post-upgrade
+              helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+Role:
+  Kind:  ClusterRole
+  Name:  ingress-nginx-admission
+Subjects:
+  Kind            Name                     Namespace
+  ----            ----                     ---------
+  ServiceAccount  ingress-nginx-admission  ingress-nginx
+  
+  
+  
+```
+piVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.1.2
+    helm.sh/chart: ingress-nginx-4.0.18
+  name: ingress-nginx-controller
+  namespace: ingress-nginx
+spec:
+  minReadySeconds: 0
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/instance: ingress-nginx
+      app.kubernetes.io/name: ingress-nginx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: controller
+        app.kubernetes.io/instance: ingress-nginx
+        app.kubernetes.io/name: ingress-nginx
+    spec:
+      containers:
+      - args:
+        - /nginx-ingress-controller
+        - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
+        - --election-id=ingress-controller-leader
+        - --watch-ingress-without-class=true
+        - --default-backend-service=app-space/default-http-backend
+        - --controller-class=k8s.io/ingress-nginx
+        - --ingress-class=nginx
+        - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
+        - --validating-webhook=:8443
+		       - --validating-webhook-certificate=/usr/local/certificates/cert
+        - --validating-webhook-key=/usr/local/certificates/key
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: LD_PRELOAD
+          value: /usr/local/lib/libmimalloc.so
+        image: registry.k8s.io/ingress-nginx/controller:v1.1.2@sha256:28b11ce69e57843de44e3db6413e98d09de0f6688e33d4bd384002a44f78405c
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /wait-shutdown
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /healthz
+            port: 10254
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+		          resources:
+          requests:
+            cpu: 100m
+            memory: 90Mi
+        securityContext:
+          allowPrivilegeEscalation: true
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
+            drop:
+            - ALL
+          runAsUser: 101
+        volumeMounts:
+        - mountPath: /usr/local/certificates/
+          name: webhook-cert
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccountName: ingress-nginx
+      terminationGracePeriodSeconds: 300
+      volumes:
+      - name: webhook-cert
+        secret:
+          secretName: ingress-nginx-admission
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.1.2
+    helm.sh/chart: ingress-nginx-4.0.18
+  name: ingress-nginx-controller
+  namespace: ingress-nginx
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+    nodePort: 30080
+  selector:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+  type: NodePort
+                                                                                                                  142,1         Bot
+```
+
+```bash
+k create ingress ingress-wear-watch -n app-space --rule="/wear=wear-service:8080" --rule="/watch=video-service:8080"
+```
+
+
+# LAB Practice Test - Network Policies
+
+k get networkpolicy -A
+
+
+kubectl get pods -l key=value
+
+```
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: internal-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      name: internal
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          name: mysql
+    ports:
+    - port: 3306
+      protocol: TCP
+  - to:
+    - podSelector:
+        matchLabels:
+          name: payroll
+    ports:
+    - port: 8080
+      protocol: TCP
+  - ports:
+     - port: 53
+       protocol: UDP
+     - port: 53
+       protocol: TCP
+```
+
+controlplane ~ ➜  k describe networkpolicy internal-policy
+Name:         internal-policy
+Namespace:    default
+Created on:   2025-06-17 18:02:02 +0000 UTC
+Labels:       <none>
+Annotations:  <none>
+Spec:
+  PodSelector:     name=internal
+  Not affecting ingress traffic
+  Allowing egress traffic:
+    To Port: 3306/TCP
+    To:
+      PodSelector: name=mysql
+    ----------
+    To Port: 8080/TCP
+    To:
+      PodSelector: name=payroll
+    ----------
+    To Port: 53/UDP
+    To Port: 53/TCP
+    To: <any> (traffic not restricted by destination)
+  Policy Types: Egress
+  
+
+# LAB Practice Test - Persistent Volumes
+  
+kubectl exec webapp -- cat /log/app.log
+
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp
+spec:
+  containers:
+    - name: webapp
+      image: kodekloud/event-simulator
+      volumeMounts:
+        - name: vol-1
+          mountPath: /log
+  volumes:
+    - name: vol-1
+      hostPath:
+        path: /var/log/webapp
+			
+```			
+
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-log
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /pv/log
+```
+
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim-log-1
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Mi
+```
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp
+spec:
+  containers:
+  - name: webapp
+    image: kodekloud/event-simulator
+	volumeMounts:
+	 - mountPath: /usr
+	   name : pv-storage
+  volumes:
+    - name: pv-storage
+      persistentVolumeClaim:
+        claimName: claim-log-1
+	
+	
+```
+
+
+# LAB Practice Test - Storage Class
+
+
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-pvc
+spec:
+  storageClassName : local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+```
+
+NOTE : The Storage Class called local-storage makes use of VolumeBindingMode set to WaitForFirstConsumer. This will delay the binding and provisioning of a PersistentVolume until a Pod using the PersistentVolumeClaim is created.
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx 
+spec:
+  containers:
+  - name: nginx 
+    image: nginx:alpine
+	volumeMounts:
+	 - mountPath: /var/www/html
+	   name : pv-storage
+  volumes:
+    - name: pv-storage
+      persistentVolumeClaim:
+        claimName: local-pvc
+```
+
+```
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: low-latency
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: kubernetes.io/no-provisioner
+reclaimPolicy: Retain # default value is Delete
+allowVolumeExpansion: true
+mountOptions:
+  - discard # this might enable UNMAP / TRIM at the block storage layer
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  guaranteedReadWriteLatency: "true" # provider-specific
+```
+
+
+# LAB Practice Test - KubeConfig
+
+ vi /root/.kube/config
+ 
+ kubectl config --kubeconfig=/root/my-kube-config use-context research
+ 
+ 
+vi ~/.bashrc
+alias k=kubectl
+
+
+ kubectl get pods --client-certificate=/etc/kubernetes/pki/users/dev-user/dev-user.crt --client-key=/etc/kubernetes/pki/users/dev-user/dev-user.key --certificate-authority=/etc/kubernetes/pki/users/dev-user/dev-user.csr
+ 
+ kubectl config --kubeconfig=/root/.kube/config
+ 
+ kubectl config set-credentials dev-user \
+  --client-certificate=/etc/kubernetes/pki/users/dev-user/dev-user.csr \
+  --client-key=/etc/kubernetes/pki/users/dev-user/dev-user.key \
+  --kubeconfig=/root/.kube/config
+  
+  k config view --kubeconfig=/root/.kube/config
+  
+  
+# LAB Practice Test Role Based Access Controls
+
+ps aux | grep kube-apiserver
+
+
+
+kubectl create role developer --verb=list --verb=create --verb=delete --resource=pods
+kubectl create rolebinding dev-user-binding --role=developer --user=dev-user
+
+
+k auth can-i --as dev-user pod describe -n blue
+
+
+controlplane ~ ✦ ✖ k describe role developer -n blue
+Name:         developer
+Labels:       <none>
+Annotations:  <none>
+PolicyRule:
+  Resources  Non-Resource URLs  Resource Names  Verbs
+  ---------  -----------------  --------------  -----
+  pods       []                 [blue-app]      [get watch create delete]
+
+k replace --force -f developer-role.yaml 
+
+
+controlplane ~ ✦ ➜  k describe role developer -n blue
+Name:         developer
+Labels:       <none>
+Annotations:  <none>
+PolicyRule:
+  Resources  Non-Resource URLs  Resource Names   Verbs
+  ---------  -----------------  --------------   -----
+  pods       []                 [dark-blue-app]  [get watch create delete]
+  
+  
+  
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  creationTimestamp: "2025-06-21T02:32:33Z"
+  name: developer
+  namespace: blue
+  resourceVersion: "4733"
+  uid: cd331a6d-7ec7-45ac-91f6-b1f04e42b48e
+rules:
+- apiGroups:
+  - ""
+  resourceNames:
+  - dark-blue-app
+  resources:
+  - pods
+  verbs:
+  - get
+  - watch
+  - create
+  - delete
+- apiGroups:
+  - "apps"
+  resources:
+  - deployments
+  verbs:
+  - create
+  - list
+"developer
+
+
+
+
+```
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: NodeAccessClusterRoles
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["*"]
+```
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: NodeAccessClusterRoles-michelle
+subjects:
+- kind: User
+  name: michelle
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: NodeAccessClusterRoles
+  apiGroup: rbac.authorization.k8s.io
+```
+
+This is requried for getting the api groupName of any Resource
+```
+kubectl api-resources
+
+controlplane ~ ➜  kubectl api-resources | grep storage 
+csidrivers                                       storage.k8s.io/v1                 false        CSIDriver
+csinodes                                         storage.k8s.io/v1                 false        CSINode
+csistoragecapacities                             storage.k8s.io/v1                 true         CSIStorageCapacity
+storageclasses                      sc           storage.k8s.io/v1                 false        StorageClass
+volumeattachments                                storage.k8s.io/v1                 false        VolumeAttachment
+persistentvolumes                   pv           v1                                false        PersistentVolume
+```
+
+
+
+```
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: storage-admin
+rules:
+- apiGroups: [""]
+  resources: ["persistentvolumes"]
+  verbs: ["*"]
+- apiGroups: ["storage.k8s.io"]
+  resources: ["storageclasses"]
+  verbs: ["*"]
+  
+```
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: michelle-storage-admin
+subjects:
+- kind: User
+  name: michelle
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: storage-admin
+  apiGroup: rbac.authorization.k8s.io
+```
+
+kubectl auth can-i get pv
+
+kubectl auth can-i get sc
+
+cat /etc/kubernetes/manifests/kube-apiserver.yaml | grep admission
+
+ps -ef | grep kube-apiserver | grep admission-plugins
+
+kubectl get pods -n kube-system
+
+
+
+
+
+
+ps -ef | grep kube-apiserver | grep mutating 
+
+
+kubectl create secret tls webhook-server-tls --cert=/root/keys/webhook-server-tls.crt --key=/root/keys/webhook-server-tls.key -n webhook-demo
+
+
+kubectl api-resources | grep storage 
+
+
+kubectl convert -f ingress-old.yaml --local -o json > ingress-new.yaml
