@@ -9,7 +9,7 @@ LAB: Practice Test Solutions
 Table of Contents
 -----------------
 
-*   [LAB: Practice Test - Pods](https://www.google.com/search?q=%23lab-practice-test---pods)
+*   **[LAB:Practice_Test_Pods](#LAB:Practice_Test_Pods)** 
 *   [LAB Practice Test - ReplicaSets](https://www.google.com/search?q=%23lab-practice-test---replicasets)
 *   [Difference between ReplicaSet and Deployment](https://www.google.com/search?q=%23difference-between-replicaset-and-deployment)
 *   [LAB Practice Test - Deployments](https://www.google.com/search?q=%23lab-practice-test---deployments)
@@ -41,7 +41,7 @@ Table of Contents
 
 * * *
 
-LAB: Practice Test - Pods
+# LAB:Practice_Test_Pods
 -------------------------
 
 **Important `kubectl` commands**
@@ -63,143 +63,147 @@ LAB: Practice Test - Pods
     ```
     _The `kubectl run` command is an imperative way to create a pod. Here, `ngix` and `redis` are the names of the pods, and `nginx` and `redis123` are the container images used._
 
-Here's an example of listing pods with wide output, showing IP addresses and nodes:
+	Here's an example of listing pods with wide output, showing IP addresses and nodes:
 
-```
-kubectl get pods -o wide
-```
+	```
+	kubectl get pods -o wide
+	```
 
-_This output shows pods `newpods-h7b7b`, `newpods-pllpx`, `newpods-w9w4l`, and `ngix` are running on the `controlplane` node, along with their IP addresses._
+	This output shows pods `newpods-h7b7b`, `newpods-pllpx`, `newpods-w9w4l`, and `ngix` are running on the `controlplane` node, along with their IP addresses._
 
-```
-NAME            READY   STATUS    RESTARTS   AGE     IP           NODE           NOMINATED NODE   READINESS GATES
-newpods-h7b7b   1/1     Running   0          4m15s   10.42.0.10   controlplane   <none>           <none>
-newpods-pllpx   1/1     Running   0          4m15s   10.42.0.9    controlplane   <none>           <none>
-newpods-w9w4l   1/1     Running   0          4m15s   10.42.0.11   controlplane   <none>           <none>
-ngix            1/1     Running   0          2m43s   10.42.0.13   controlplane   <none>           <none>
-```
+	```
+	NAME            READY   STATUS    RESTARTS   AGE     IP           NODE           NOMINATED NODE   READINESS GATES
+	newpods-h7b7b   1/1     Running   0          4m15s   10.42.0.10   controlplane   <none>           <none>
+	newpods-pllpx   1/1     Running   0          4m15s   10.42.0.9    controlplane   <none>           <none>
+	newpods-w9w4l   1/1     Running   0          4m15s   10.42.0.11   controlplane   <none>           <none>
+	ngix            1/1     Running   0          2m43s   10.42.0.13   controlplane   <none>           <none>
+	```
 
-Here's an example of listing pods showing a `webapp` pod in `ImagePullBackOff` status:
+	Here's an example of listing pods showing a `webapp` pod in `ImagePullBackOff` status:
 
-```
-kubectl get pods
-```
+	```
+	kubectl get pods
+	```
 
-_This output indicates that the `webapp` pod is experiencing an `ImagePullBackOff` error, meaning it's unable to pull one of its container images._
+	```
+	NAME            READY   STATUS             RESTARTS   AGE
+	newpods-h7b7b   1/1     Running            0          4m54s
+	newpods-pllpx   1/1     Running            0          4m54s
+	newpods-w9w4l   1/1     Running            0          4m54s
+	ngix            1/1     Running            0          3m22s
+	webapp          1/2     ImagePullBackOff   0          27s
+	```
 
-```
-NAME            READY   STATUS             RESTARTS   AGE
-newpods-h7b7b   1/1     Running            0          4m54s
-newpods-pllpx   1/1     Running            0          4m54s
-newpods-w9w4l   1/1     Running            0          4m54s
-ngix            1/1     Running            0          3m22s
-webapp          1/2     ImagePullBackOff   0          27s
-```
+	This output indicates that the `webapp` pod is experiencing an `ImagePullBackOff` error, meaning it's unable to pull one of its container images.
 
-**Describing the `webapp` pod:**
+	**Describing the `webapp` pod:**
 
-```
-kubectl describe pod webapp
-```
+	```
+	kubectl describe pod webapp
+	```
 
-_This command provides detailed information about the `webapp` pod, specifically highlighting the reason for its `ImagePullBackOff` status._
 
-```
-## Output
 
-Name:             webapp
-Namespace:        default
-Priority:         0
-Service Account:  default
-Node:             controlplane/192.168.187.125
-Start Time:       Mon, 06 Jan 2025 14:02:05 +0000
-Labels:           <none>
-Annotations:      <none>
-Status:           Pending
-IP:               10.42.0.14
-IPs:
-  IP:  10.42.0.14
-Containers:
-  nginx:
-    Container ID:   containerd://9d6ef984452d2ed51987b7e12d82fcc664b3d1a982018a3460336fa82d1be8fe
-    Image:          nginx
-    Image ID:       docker.io/library/nginx@sha256:42e917aaa1b5bb40dd0f6f7f4f857490ac7747d7ef73b391c774a41a8b994f15
-    Port:           <none>
-    Host Port:      <none>
-    State:          Running
-      Started:      Mon, 06 Jan 2025 14:02:06 +0000
-    Ready:          True
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-7qrr7 (ro)
-  agentx:
-    Container ID:
-    Image:          agentx
-    Image ID:
-    Port:           <none>
-    Host Port:      <none>
-    State:          Waiting
-      Reason:       ImagePullBackOff
-    Ready:          False
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-7qrr7 (ro)
-Conditions:
-  Type                        Status
-  PodReadyToStartContainers   True
-  Initialized                 True
-  Ready                       False
-  ContainersReady             False
-  PodScheduled                True
-Volumes:
-  kube-api-access-7qrr7:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type     Reason     Age                From               Message
-  ----     ------     ----               ----               -------
-  Normal   Scheduled  98s                default-scheduler  Successfully assigned default/webapp to controlplane
-  Normal   Pulling    98s                kubelet            Pulling image "nginx"
-  Normal   Pulled     98s                kubelet            Successfully pulled image "nginx" in 159ms (159ms including waiting). Image size: 72099410 bytes.
-  Normal   Created    98s                kubelet            Created container nginx
-  Normal   Started    98s                kubelet            Started container nginx
-  Warning  Failed     57s (x3 over 97s)  kubelet            Error: ErrImagePull
-  Normal   BackOff    18s (x5 over 97s)  kubelet            Back-off pulling image "agentx"
-  Warning  Failed     18s (x5 over 97s)  kubelet            Error: ImagePullBackOff
-  Normal   Pulling    7s (x4 over 98s)   kubelet            Pulling image "agentx"
-  Warning  Failed     6s (x4 over 97s)   kubelet            Failed to pull image "agentx": failed to pull and unpack image "docker.io/library/agentx:latest": failed to resolve reference "docker.io/library/agentx:latest": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
-```
+	```
+	## Output
 
-_The `describe` output clearly shows that the `nginx` container is running, but the `agentx` container is in `ImagePullBackOff` state. The events section provides the specific error: "Failed to pull image 'agentx': failed to pull and unpack image 'docker.io/library/agentx:latest': failed to resolve reference 'docker.io/library/agentx:latest': pull access denied, repository does not exist or may require authorization: server message: insufficient\_scope: authorization failed." This indicates the image `agentx` could not be found or pulled._
+	Name:             webapp
+	Namespace:        default
+	Priority:         0
+	Service Account:  default
+	Node:             controlplane/192.168.187.125
+	Start Time:       Mon, 06 Jan 2025 14:02:05 +0000
+	Labels:           <none>
+	Annotations:      <none>
+	Status:           Pending
+	IP:               10.42.0.14
+	IPs:
+	  IP:  10.42.0.14
+	Containers:
+	  nginx:
+		Container ID:   containerd://9d6ef984452d2ed51987b7e12d82fcc664b3d1a982018a3460336fa82d1be8fe
+		Image:          nginx
+		Image ID:       docker.io/library/nginx@sha256:42e917aaa1b5bb40dd0f6f7f4f857490ac7747d7ef73b391c774a41a8b994f15
+		Port:           <none>
+		Host Port:      <none>
+		State:          Running
+		  Started:      Mon, 06 Jan 2025 14:02:06 +0000
+		Ready:          True
+		Restart Count:  0
+		Environment:    <none>
+		Mounts:
+		  /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-7qrr7 (ro)
+	  agentx:
+		Container ID:
+		Image:          agentx
+		Image ID:
+		Port:           <none>
+		Host Port:      <none>
+		State:          Waiting
+		  Reason:       ImagePullBackOff
+		Ready:          False
+		Restart Count:  0
+		Environment:    <none>
+		Mounts:
+		  /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-7qrr7 (ro)
+	Conditions:
+	  Type                        Status
+	  PodReadyToStartContainers   True
+	  Initialized                 True
+	  Ready                       False
+	  ContainersReady             False
+	  PodScheduled                True
+	Volumes:
+	  kube-api-access-7qrr7:
+		Type:                    Projected (a volume that contains injected data from multiple sources)
+		TokenExpirationSeconds:  3607
+		ConfigMapName:           kube-root-ca.crt
+		ConfigMapOptional:       <nil>
+		DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+								 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type     Reason     Age                From               Message
+	  ----     ------     ----               ----               -------
+	  Normal   Scheduled  98s                default-scheduler  Successfully assigned default/webapp to controlplane
+	  Normal   Pulling    98s                kubelet            Pulling image "nginx"
+	  Normal   Pulled     98s                kubelet            Successfully pulled image "nginx" in 159ms (159ms including waiting). Image size: 72099410 bytes.
+	  Normal   Created    98s                kubelet            Created container nginx
+	  Normal   Started    98s                kubelet            Started container nginx
+	  Warning  Failed     57s (x3 over 97s)  kubelet            Error: ErrImagePull
+	  Normal   BackOff    18s (x5 over 97s)  kubelet            Back-off pulling image "agentx"
+	  Warning  Failed     18s (x5 over 97s)  kubelet            Error: ImagePullBackOff
+	  Normal   Pulling    7s (x4 over 98s)   kubelet            Pulling image "agentx"
+	  Warning  Failed     6s (x4 over 97s)   kubelet            Failed to pull image "agentx": failed to pull and unpack image "docker.io/library/agentx:latest": failed to resolve reference "docker.io/library/agentx:latest": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+	```
 
-NOTE: Total number of running pods/Total number of pods
+	The `describe` output clearly shows that the `nginx` container is running, but the `agentx` container is in `ImagePullBackOff` state. The events section provides the specific error: "Failed to pull image 'agentx': failed to pull and unpack image 'docker.io/library/agentx:latest': failed to resolve reference 'docker.io/library/agentx:latest': pull access denied, repository does not exist or may require authorization: server message: insufficient\_scope: authorization failed." This indicates the image `agentx` could not be found or pulled.
 
-### Edit Pods
+	NOTE: Total number of running pods/Total number of pods
+
+	#### Edit Pods
 
 *   **Set image for a pod, replicationcontroller, deployment, etc.:**
     ```
     kubectl set image (-f FILENAME | TYPE NAME) CONTAINER_NAME_1=CONTAINER_IMAGE_1 ... CONTAINER_NAME_N=CONTAINER_IMAGE_N
     ```
-    _This command allows you to update the image of one or more containers within a specified resource. You can target various resource types like `pod`, `replicationcontroller`, `deployment`, `daemonset`, `statefulset`, `cronjob`, and `replicaset`._
-    **Example:**
+    The above command allows you to update the image of one or more containers within a specified resource. You can target various resource types like `pod`, `replicationcontroller`, `deployment`, `daemonset`, `statefulset`, `cronjob`, and `replicaset`._
+   
+	**Example:**
     ```
     kubectl set image po redis redis=redis
     ```
-    _This command updates the `redis` container's image in the `redis` pod to `redis`._
+    
+	This command updates the `redis` container's image in the `redis` pod to `redis`._
 *   **Edit a pod directly:**
-    ```
+    
+	```
     kubectl edit pod <pod-name>
     ```
-    _This command opens the pod's definition in your default editor, allowing for direct modifications._
+    
+	This command opens the pod's definition in your default editor, allowing for direct modifications._
     **NOTE**: Please note that only the properties listed below are editable for a running pod:
     *   `spec.containers[*].image`
     *   `spec.initContainers[*].image`
@@ -207,78 +211,79 @@ NOTE: Total number of running pods/Total number of pods
     *   `spec.tolerations`
     *   `spec.terminationGracePeriodSeconds`
 
-LAB Practice Test - ReplicaSets
+
+#LAB Practice Test - ReplicaSets
 -------------------------------
 
 *   **Describe a ReplicaSet:**
     ```
     kubectl describe rs new-replica-set
     ```
-    _This command provides detailed information about the `new-replica-set` ReplicaSet, including its desired state, current state, and the pod template it uses._
+    This command provides detailed information about the `new-replica-set` ReplicaSet, including its desired state, current state, and the pod template it uses.
     
-```
-apiVersion: apps/v1
-kind: ReplicaSet
-metadata:
-  creationTimestamp: "2025-01-06T14:19:09Z"
-  generation: 1
-  name: new-replica-set
-  namespace: default
-  resourceVersion: "749"
-  uid: 0ebd606d-4eec-43fd-8084-ebc00f4dc9af
-spec:
-  replicas: 4 # Specifies that 4 replicas of the pod should be maintained.
-  selector:
-    matchLabels:
-      name: busybox-pod # The ReplicaSet will manage pods with this label.
-  template:
-    metadata:
-      creationTimestamp: null
-      labels:
-        name: busybox-pod # Labels applied to pods created by this ReplicaSet.
-    spec:
-      containers:
-      - command: # Command to run inside the container.
-        - sh
-        - -c
-        - echo Hello Kubernetes! && sleep 3600 # The command executed by the busybox container.
-        image: busybox777 # The container image to use. This image appears to be incorrect/unavailable.
-        imagePullPolicy: Always # Always attempt to pull the image.
-        name: busybox-container # Name of the container.
-        resources: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always # Always restart the container if it exits.
-      schedulerName: default-scheduler
-      securityContext: {}
-      terminationGracePeriodSeconds: 30
-status:
-  fullyLabeledReplicas: 4
-  observedGeneration: 1
-  replicas: 4
-```
+	```
+	apiVersion: apps/v1
+	kind: ReplicaSet
+	metadata:
+	  creationTimestamp: "2025-01-06T14:19:09Z"
+	  generation: 1
+	  name: new-replica-set
+	  namespace: default
+	  resourceVersion: "749"
+	  uid: 0ebd606d-4eec-43fd-8084-ebc00f4dc9af
+	spec:
+	  replicas: 4 # Specifies that 4 replicas of the pod should be maintained.
+	  selector:
+		matchLabels:
+		  name: busybox-pod # The ReplicaSet will manage pods with this label.
+	  template:
+		metadata:
+		  creationTimestamp: null
+		  labels:
+			name: busybox-pod # Labels applied to pods created by this ReplicaSet.
+		spec:
+		  containers:
+		  - command: # Command to run inside the container.
+			- sh
+			- -c
+			- echo Hello Kubernetes! && sleep 3600 # The command executed by the busybox container.
+			image: busybox777 # The container image to use. This image appears to be incorrect/unavailable.
+			imagePullPolicy: Always # Always attempt to pull the image.
+			name: busybox-container # Name of the container.
+			resources: {}
+			terminationMessagePath: /dev/termination-log
+			terminationMessagePolicy: File
+		  dnsPolicy: ClusterFirst
+		  restartPolicy: Always # Always restart the container if it exits.
+		  schedulerName: default-scheduler
+		  securityContext: {}
+		  terminationGracePeriodSeconds: 30
+	status:
+	  fullyLabeledReplicas: 4
+	  observedGeneration: 1
+	  replicas: 4
+	```
 
-_The ReplicaSet `new-replica-set` is configured to maintain 4 replicas of a pod named `busybox-pod`. The pods attempt to use the `busybox777` image and execute a shell command. The status section shows that 4 replicas are desired and 4 are currently managed._
+	The ReplicaSet `new-replica-set` is configured to maintain 4 replicas of a pod named `busybox-pod`. The pods attempt to use the `busybox777` image and execute a shell command. The status section shows that 4 replicas are desired and 4 are currently managed._
 
 *   **Get ReplicaSets:**
     ```
     kubectl get rs
     ```
-    _This command lists all ReplicaSets in the current namespace._
+    This command lists all ReplicaSets in the current namespace._
     
-```
-NAME              DESIRED   CURRENT   READY   AGE
-new-replica-set   4         4         0       3m17s
-```
+	```
+	NAME              DESIRED   CURRENT   READY   AGE
+	new-replica-set   4         4         0       3m17s
+	```
 
-_The output shows that `new-replica-set` desires 4 pods, currently has 4 pods, but 0 are ready. This indicates an issue with the pods becoming ready, likely due to an image pull problem._
+	The output shows that `new-replica-set` desires 4 pods, currently has 4 pods, but 0 are ready. This indicates an issue with the pods becoming ready, likely due to an image pull problem._
 
 *   **Get pods:**
     ```
     kubectl get pods
     ```
-    _This command lists all pods, and in this case, reveals the reason for the ReplicaSet's unready status._
+    This command lists all pods, and in this case, reveals the reason for the ReplicaSet's unready status._
     
 ```
 NAME                    READY   STATUS             RESTARTS   AGE
