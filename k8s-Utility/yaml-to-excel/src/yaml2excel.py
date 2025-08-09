@@ -20,6 +20,11 @@ import pandas as pd
 def flatten_yaml(data, parent_key='', sep='.'):
     """
     Recursively flattens a nested dictionary or list into a flat dictionary.
+    flatten_yaml() function: This is the core recursive function that transforms the nested YAML structure into a flat dictionary. 
+    It traverses the YAML data (which is a Python dictionary or list), and for each nested key-value pair, it constructs a new, flattened key by concatenating 
+    the parent keys with a separator (a dot . by default). For lists, it appends the index in brackets [i] to the key. This process continues until all nested 
+    structures are resolved into a single-level dictionary.
+
 
     :param data: The YAML data (dict or list) to flatten.
     :param parent_key: The base key string for recursion.
