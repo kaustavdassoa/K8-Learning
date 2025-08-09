@@ -9,27 +9,27 @@ LAB: Practice Test Solutions
 Table of Contents
 -----------------
 
-*   **[LAB:Practice_Test_Pods](#LAB:Practice_Test_Pods)** 
-*   [LAB Practice Test - ReplicaSets](https://www.google.com/search?q=%23lab-practice-test---replicasets)
-*   [Difference between ReplicaSet and Deployment](https://www.google.com/search?q=%23difference-between-replicaset-and-deployment)
-*   [LAB Practice Test - Deployments](https://www.google.com/search?q=%23lab-practice-test---deployments)
-*   [LAB Practice Test - Docker Images](https://www.google.com/search?q=%23lab-practice-test---docker-images)
+*   [LAB:Practice_Test_Pods](#LAB:Practice_Test_Pods)
+*   [LAB Practice Test - ReplicaSets](#LAB Practice Test - ReplicaSets)
+*   [Difference between ReplicaSet and Deployment](#Difference between ReplicaSet and Deployment)
+*   [LAB Practice Test - Deployments](#LAB Practice Test - Deployments)
+*   [LAB Practice Test - Docker Images](#LAB Practice Test - Docker Images])
 *   [LAB Practice Test - Commands and Arguments](https://www.google.com/search?q=%23lab-practice-test---commands-and-arguments)
 *   [LAB Practice Test - ConfigMaps](https://www.google.com/search?q=%23lab-practice-test---configmaps)
 *   [LAB Practice Test - Security Contexts](https://www.google.com/search?q=%23lab-practice-test---security-contexts)
 *   [LAB Practice Test - Service Accounts](https://www.google.com/search?q=%23lab-practice-test---service-accounts)
 *   [LAB Practice Test - Secrets](https://www.google.com/search?q=%23lab-practice-test---secrets)
-*   [LAB Practice Test - Resource Requirements](https://www.google.com/search?q=%23lab-practice-test---resource-requirements)
-*   [LAB Practice Test - Taints and Toleration](https://www.google.com/search?q=%23lab-practice-test---taints-and-toleration)
+*   [LAB Practice Test - Resource Requirements](#LAB Practice Test - Resource Requirements)
+*   [LAB Practice Test - Taints and Toleration](#LAB Practice Test - Taints and Toleration)
 *   [LAB Practice Test - Node Affinity](https://www.google.com/search?q=%23lab-practice-test---node-affinity)
 *   [LAB Practice Test - Multi-Container Pods](https://www.google.com/search?q=%23lab-practice-test---multi-container-pods)
 *   [LAB Practice Test – Init Containers](https://www.google.com/search?q=%23lab-practice-test--init-containers)
-*   [LAB Practice Test - Readiness and Liveness Probes](https://www.google.com/search?q=%23lab-practice-test---readiness-and-liveness-probes)
+*   [LAB Practice Test - Readiness and Liveness Probes](#LAB Practice Test - Readiness and Liveness Probes)
 *   [LAB Practice Test - Container Logging](https://www.google.com/search?q=%23lab-practice-test---container-logging)
-*   [LAB Practice Test - Monitoring](https://www.google.com/search?q=%23lab-practice-test---monitoring)
-*   [LAB Practice Test - Labels, Selectors and Annotations](https://www.google.com/search?q=%23lab-practice-test---labels-selectors-and-annotations)
-*   [LAB Practice Test - Rolling Updates & Rollbacks](https://www.google.com/search?q=%23lab-practice-test---rolling-updates--rollbacks)
-*   [LAB Practice Test - Deployment Strategies](https://www.google.com/search?q=%23lab-practice-test---deployment-strategies)
+*   [LAB Practice Test - Monitoring](#LAB Practice Test - Monitoring)
+*   [LAB Practice Test - Labels, Selectors and Annotations](#LAB Practice Test - Labels, Selectors and Annotations)
+*   [LAB Practice Test - Rolling Updates & Rollbacks](#LAB Practice Test - Rolling Updates & Rollbacks)
+*   [LAB Practice Test - Deployment Strategies](#LAB Practice Test - Deployment Strategies)
 *   [LAB Practice Test - Jobs & CronJobs](https://www.google.com/search?q=%23lab-practice-test---jobs--cronjobs)
 *   [LAB Practice Test - Services](https://www.google.com/search?q=%23lab-practice-test---services)
 *   [LAB Practice Test - Ingress Networking - 1](https://www.google.com/search?q=%23lab-practice-test---ingress-networking---1)
@@ -232,29 +232,29 @@ Table of Contents
 	  resourceVersion: "749"
 	  uid: 0ebd606d-4eec-43fd-8084-ebc00f4dc9af
 	spec:
-	  replicas: 4 # Specifies that 4 replicas of the pod should be maintained.
+	  replicas: 4                                              # Specifies that 4 replicas of the pod should be maintained.
 	  selector:
 		matchLabels:
-		  name: busybox-pod # The ReplicaSet will manage pods with this label.
+		  name: busybox-pod                                    # The ReplicaSet will manage pods with this label.
 	  template:
 		metadata:
 		  creationTimestamp: null
 		  labels:
-			name: busybox-pod # Labels applied to pods created by this ReplicaSet.
+			name: busybox-pod                                   # Labels applied to pods created by this ReplicaSet.
 		spec:
 		  containers:
 		  - command: # Command to run inside the container.
 			- sh
 			- -c
-			- echo Hello Kubernetes! && sleep 3600 # The command executed by the busybox container.
-			image: busybox777 # The container image to use. This image appears to be incorrect/unavailable.
-			imagePullPolicy: Always # Always attempt to pull the image.
-			name: busybox-container # Name of the container.
+			- echo Hello Kubernetes! && sleep 3600               # The command executed by the busybox container.
+			image: busybox777                                    # The container image to use. This image appears to be incorrect/unavailable.
+			imagePullPolicy: Always                              # Always attempt to pull the image.
+			name: busybox-container                              # Name of the container.
 			resources: {}
 			terminationMessagePath: /dev/termination-log
 			terminationMessagePolicy: File
 		  dnsPolicy: ClusterFirst
-		  restartPolicy: Always # Always restart the container if it exits.
+		  restartPolicy: Always                                  # Always restart the container if it exits.
 		  schedulerName: default-scheduler
 		  securityContext: {}
 		  terminationGracePeriodSeconds: 30
@@ -264,7 +264,7 @@ Table of Contents
 	  replicas: 4
 	```
 
-	The ReplicaSet `new-replica-set` is configured to maintain 4 replicas of a pod named `busybox-pod`. The pods attempt to use the `busybox777` image and execute a shell command. The status section shows that 4 replicas are desired and 4 are currently managed._
+	The ReplicaSet `new-replica-set` is configured to maintain 4 replicas of a pod named `busybox-pod`. The pods attempt to use the `busybox777` image and execute a shell command. The status section shows that 4 replicas are desired and 4 are currently managed.
 
 *   **Get ReplicaSets:**
     ```
@@ -285,125 +285,127 @@ Table of Contents
     ```
     This command lists all pods, and in this case, reveals the reason for the ReplicaSet's unready status._
     
-```
-NAME                    READY   STATUS             RESTARTS   AGE
-new-replica-set-2r2rv   0/1     ImagePullBackOff   0          4m22s
-new-replica-set-hgbgm   0/1     ImagePullBackOff   0          4m22s
-new-replica-set-lpvsm   0/1     ImagePullBackOff   0          4m22s
-new-replica-set-pbrlq   0/1     ImagePullBackOff   0          4m22s
-```
+	```
+	NAME                    READY   STATUS             RESTARTS   AGE
+	new-replica-set-2r2rv   0/1     ImagePullBackOff   0          4m22s
+	new-replica-set-hgbgm   0/1     ImagePullBackOff   0          4m22s
+	new-replica-set-lpvsm   0/1     ImagePullBackOff   0          4m22s
+	new-replica-set-pbrlq   0/1     ImagePullBackOff   0          4m22s
+	```
 
-_All pods managed by `new-replica-set` are in `ImagePullBackOff` status, confirming the image pull issue._
+	All pods managed by `new-replica-set` are in `ImagePullBackOff` status, confirming the image pull issue._
 
 *   **Get a specific pod:**
     ```
     kubectl get pod new-replica-set-2r2rv
     ```
-    _This command provides a quick status update for a single pod._
+    This command provides a quick status update for a single pod.
     
-```
-NAME                    READY   STATUS             RESTARTS   AGE
-new-replica-set-2r2rv   0/1     ImagePullBackOff   0          4m34s
-```
+	```
+	NAME                    READY   STATUS             RESTARTS   AGE
+	new-replica-set-2r2rv   0/1     ImagePullBackOff   0          4m34s
+	```
 
 *   **Describe a specific pod in ReplicaSet:**
+
     ```
     kubectl describe pod new-replica-set-2r2rv
     ```
-    _This command provides detailed events and status for the failing pod._
     
-```
-Name:             new-replica-set-2r2rv
-Namespace:        default
-Priority:         0
-Service Account:  default
-Node:             controlplane/192.168.44.33
-Start Time:       Mon, 06 Jan 2025 14:19:09 +0000
-Labels:           name=busybox-pod
-Annotations:      <none>
-Status:           Pending
-IP:               10.42.0.10
-IPs:
-  IP:           10.42.0.10
-Controlled By:  ReplicaSet/new-replica-set
-Containers:
-  busybox-container:
-    Container ID:
-    Image:         busybox777 # The image that failed to pull.
-    Image ID:
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sh
-      -c
-      echo Hello Kubernetes! && sleep 3600
-    State:          Waiting
-      Reason:       ImagePullBackOff
-    Ready:          False
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jmdsx (ro)
-Conditions:
-  Type                        Status
-  PodReadyToStartContainers   True
-  Initialized                 True
-  Ready                       False
-  ContainersReady             False
-  PodScheduled                True
-Volumes:
-  kube-api-access-jmdsx:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type     Reason     Age                    From               Message
-  ----     ------     ----                   ----               -------
-  Normal   Scheduled  4m43s                  default-scheduler  Successfully assigned default/new-replica-set-2r2rv to controlplane
-  Normal   Pulling    3m18s (x4 over 4m43s)  kubelet            Pulling image "busybox777"
-  Warning  Failed     3m17s (x4 over 4m42s)  kubelet            Failed to pull image "busybox777": failed to pull and unpack image "docker.io/library/busybox777:latest": failed to resolve reference "docker.io/library/busybox777:latest": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
-  Warning  Failed     3m17s (x4 over 4m42s)  kubelet            Error: ErrImagePull
-  Warning  Failed     3m5s (x6 over 4m42s)   kubelet            Error: ImagePullBackOff
-  Normal   BackOff    2m52s (x7 over 4m42s)  kubelet            Back-off pulling image "busybox777"
-```
+	This command provides detailed events and status for the failing pod.
+    
+	```
+	Name:             new-replica-set-2r2rv
+	Namespace:        default
+	Priority:         0
+	Service Account:  default
+	Node:             controlplane/192.168.44.33
+	Start Time:       Mon, 06 Jan 2025 14:19:09 +0000
+	Labels:           name=busybox-pod
+	Annotations:      <none>
+	Status:           Pending
+	IP:               10.42.0.10
+	IPs:
+	  IP:           10.42.0.10
+	Controlled By:  ReplicaSet/new-replica-set
+	Containers:
+	  busybox-container:
+		Container ID:
+		Image:         busybox777 # The image that failed to pull.
+		Image ID:
+		Port:          <none>
+		Host Port:     <none>
+		Command:
+		  sh
+		  -c
+		  echo Hello Kubernetes! && sleep 3600
+		State:          Waiting
+		  Reason:       ImagePullBackOff
+		Ready:          False
+		Restart Count:  0
+		Environment:    <none>
+		Mounts:
+		  /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jmdsx (ro)
+	Conditions:
+	  Type                        Status
+	  PodReadyToStartContainers   True
+	  Initialized                 True
+	  Ready                       False
+	  ContainersReady             False
+	  PodScheduled                True
+	Volumes:
+	  kube-api-access-jmdsx:
+		Type:                    Projected (a volume that contains injected data from multiple sources)
+		TokenExpirationSeconds:  3607
+		ConfigMapName:           kube-root-ca.crt
+		ConfigMapOptional:       <nil>
+		DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+								 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type     Reason     Age                    From               Message
+	  ----     ------     ----                   ----               -------
+	  Normal   Scheduled  4m43s                  default-scheduler  Successfully assigned default/new-replica-set-2r2rv to controlplane
+	  Normal   Pulling    3m18s (x4 over 4m43s)  kubelet            Pulling image "busybox777"
+	  Warning  Failed     3m17s (x4 over 4m42s)  kubelet            Failed to pull image "busybox777": failed to pull and unpack image "docker.io/library/busybox777:latest": failed to resolve reference "docker.io/library/busybox777:latest": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+	  Warning  Failed     3m17s (x4 over 4m42s)  kubelet            Error: ErrImagePull
+	  Warning  Failed     3m5s (x6 over 4m42s)   kubelet            Error: ImagePullBackOff
+	  Normal   BackOff    2m52s (x7 over 4m42s)  kubelet            Back-off pulling image "busybox777"
+	```
 
-_The `describe` output for `new-replica-set-2r2rv` confirms the `ImagePullBackOff` status. The key message in the events section is "Failed to pull image 'busybox777': failed to pull and unpack image 'docker.io/library/busybox777:latest': failed to resolve reference 'docker.io/library/busybox777:latest': pull access denied, repository does not exist or may require authorization: server message: insufficient\_scope: authorization failed". This indicates that the `busybox777` image does not exist or is inaccessible._
+	The `describe` output for `new-replica-set-2r2rv` confirms the `ImagePullBackOff` status. The key message in the events section is "Failed to pull image 'busybox777': failed to pull and unpack image 'docker.io/library/busybox777:latest': failed to resolve reference 'docker.io/library/busybox777:latest': pull access denied, repository does not exist or may require authorization: server message: insufficient\_scope: authorization failed". This indicates that the `busybox777` image does not exist or is inaccessible._
 
 *   **Delete multiple pods:**
     ```
     kubectl delete pods new-replica-set-2r2rv new-replica-set-hgbgm new-replica-set-lpvsm new-replica-set-pbrlq
     ```
-    _Deleting the failing pods will cause the ReplicaSet to recreate them, giving an opportunity for a fix (e.g., updating the image)._
+    Deleting the failing pods will cause the ReplicaSet to recreate them, giving an opportunity for a fix (e.g., updating the image)._
 
-Here's an example YAML for a ReplicaSet with an `nginx` container:
+	Here's an example YAML for a ReplicaSet with an `nginx` container:
 
-```
-apiVersion: apps/v1
-kind: ReplicaSet
-metadata:
-  name: replicaset-1
-spec:
-  replicas: 2 # Desired number of pod replicas.
-  selector:
-    matchLabels:
-      tier: frontend # Selector to identify pods managed by this ReplicaSet.
-  template:
-    metadata:
-      labels:
-        tier: frontend # Labels applied to pods created by this ReplicaSet.
-    spec:
-      containers:
-      - name: nginx # Name of the container.
-        image: nginx # Image to use for the container.
-```
+	```
+	apiVersion: apps/v1
+	kind: ReplicaSet
+	metadata:
+	  name: replicaset-1
+	spec:
+	  replicas: 2 # Desired number of pod replicas.
+	  selector:
+		matchLabels:
+		  tier: frontend # Selector to identify pods managed by this ReplicaSet.
+	  template:
+		metadata:
+		  labels:
+			tier: frontend # Labels applied to pods created by this ReplicaSet.
+		spec:
+		  containers:
+		  - name: nginx # Name of the container.
+			image: nginx # Image to use for the container.
+	```
 
-_This YAML defines a ReplicaSet named `replicaset-1` that aims to maintain 2 replicas of an `nginx` pod, identified by the label `tier: frontend`._
+	This YAML defines a ReplicaSet named `replicaset-1` that aims to maintain 2 replicas of an `nginx` pod, identified by the label `tier: frontend`._
 
 *   **Delete multiple ReplicaSets:**
     ```
@@ -411,95 +413,97 @@ _This YAML defines a ReplicaSet named `replicaset-1` that aims to maintain 2 rep
     ```
     _This command deletes the specified ReplicaSets._
     
-```
-replicaset.apps "replicaset-1" deleted
-replicaset.apps "replicaset-2" deleted
-```
+	```
+	replicaset.apps "replicaset-1" deleted
+	replicaset.apps "replicaset-2" deleted
+	```
 
 *   **Update the image of a ReplicaSet:**
     ```
     kubectl set image rs new-replica-set busybox-container=busybox
     ```
-    _This command updates the `busybox-container` in the `new-replica-set` ReplicaSet to use the `busybox` image._
+    _This command updates the `busybox-container` in the `new-replica-set` ReplicaSet to use the `busybox` image.
     **NOTE**: After updating the ReplicaSet image, one needs to delete the existing pods to get the pods recreated with the new image. The ReplicaSet will automatically create new pods with the updated image.
+
 *   **Scale a ReplicaSet:**
     ```
     kubectl scale rs new-replica-set --replicas=5
     ```
-    _This command scales the `new-replica-set` ReplicaSet to have 5 replicas._
+    This command scales the `new-replica-set` ReplicaSet to have 5 replicas._
+
 *   **Edit a ReplicaSet directly:**
     ```
     kubectl edit replicaset new-replica-set
     ```
-    _This command opens the ReplicaSet's definition in your default editor for direct modification._
+    This command opens the ReplicaSet's definition in your default editor for direct modification._
 
-Difference between ReplicaSet and Deployment
---------------------------------------------
+	Difference between ReplicaSet and Deployment
+	--------------------------------------------
 
-*   **Purpose and Functionality:**
-    *   **ReplicaSet** ensures a specified number of pod replicas are running at any given time.
-    *   **Deployment** manages ReplicaSets and provides declarative updates to applications, along with additional features for managing application lifecycle.
-*   **Update Strategy:**
-    *   **ReplicaSet** doesn't handle updates to pod templates - if you want to update the pod template, you need to create a new ReplicaSet.
-    *   **Deployment** automatically handles updates by creating new ReplicaSets and gradually transitioning pods from old to new versions (rolling updates).
-*   **Version History:**
-    *   **ReplicaSet** maintains no history of previous versions.
-    *   **Deployment** maintains a revision history and allows easy rollback to previous versions.
+	*   **Purpose and Functionality:**
+		*   **ReplicaSet** ensures a specified number of pod replicas are running at any given time.
+		*   **Deployment** manages ReplicaSets and provides declarative updates to applications, along with additional features for managing application lifecycle.
+	*   **Update Strategy:**
+		*   **ReplicaSet** doesn't handle updates to pod templates - if you want to update the pod template, you need to create a new ReplicaSet.
+		*   **Deployment** automatically handles updates by creating new ReplicaSets and gradually transitioning pods from old to new versions (rolling updates).
+	*   **Version History:**
+		*   **ReplicaSet** maintains no history of previous versions.
+		*   **Deployment** maintains a revision history and allows easy rollback to previous versions.
 
-#### ReplicaSet example
+	#### ReplicaSet example
 
-```
-apiVersion: apps/v1
-kind: ReplicaSet
-metadata:
-  name: frontend
-spec:
-  replicas: 3 # Desired number of pods.
-  selector:
-    matchLabels:
-      app: frontend # Selector to identify pods.
-  template:
-    metadata:
-      labels:
-        app: frontend # Labels applied to pods.
-    spec:
-      containers:
-      - name: php-redis # Name of the container.
-        image: gcr.io/google_samples/gb-frontend:v1 # Image for the container.
-```
+	```
+	apiVersion: apps/v1
+	kind: ReplicaSet
+	metadata:
+	  name: frontend
+	spec:
+	  replicas: 3 # Desired number of pods.
+	  selector:
+		matchLabels:
+		  app: frontend # Selector to identify pods.
+	  template:
+		metadata:
+		  labels:
+			app: frontend # Labels applied to pods.
+		spec:
+		  containers:
+		  - name: php-redis # Name of the container.
+			image: gcr.io/google_samples/gb-frontend:v1 # Image for the container.
+	```
 
-_This YAML defines a ReplicaSet named `frontend` that maintains 3 replicas of a pod running the `php-redis` container with the specified image._
+	This YAML defines a ReplicaSet named `frontend` that maintains 3 replicas of a pod running the `php-redis` container with the specified image._
 
-#### Deployment example
+	#### Deployment example
 
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend
-spec:
-  replicas: 3 # Desired number of pods.
-  strategy:
-    type: RollingUpdate # Specifies a rolling update strategy.
-    rollingUpdate:
-      maxSurge: 1 # Allows one extra pod to be created during update.
-      maxUnavailable: 0 # Ensures no pods are unavailable during update.
-  selector:
-    matchLabels:
-      app: frontend # Selector to identify pods.
-  template:
-    metadata:
-      labels:
-        app: frontend # Labels applied to pods.
-    spec:
-      containers:
-      - name: php-redis # Name of the container.
-        image: gcr.io/google_samples/gb-frontend:v1 # Image for the container.
-```
+	```
+	apiVersion: apps/v1
+	kind: Deployment
+	metadata:
+	  name: frontend
+	spec:
+	  replicas: 3 # Desired number of pods.
+	  strategy:
+		type: RollingUpdate # Specifies a rolling update strategy.
+		rollingUpdate:
+		  maxSurge: 1 # Allows one extra pod to be created during update.
+		  maxUnavailable: 0 # Ensures no pods are unavailable during update.
+	  selector:
+		matchLabels:
+		  app: frontend # Selector to identify pods.
+	  template:
+		metadata:
+		  labels:
+			app: frontend # Labels applied to pods.
+		spec:
+		  containers:
+		  - name: php-redis # Name of the container.
+			image: gcr.io/google_samples/gb-frontend:v1 # Image for the container.
+	```
 
-_This YAML defines a Deployment named `frontend` that aims for 3 replicas using a `RollingUpdate` strategy. This allows for smooth updates of the `php-redis` application without downtime._
+	This YAML defines a Deployment named `frontend` that aims for 3 replicas using a `RollingUpdate` strategy. This allows for smooth updates of the `php-redis` application without downtime._
 
-LAB Practice Test - Deployments
+# LAB Practice Test - Deployments
 -------------------------------
 
 *   **Get pods:**
@@ -570,100 +574,100 @@ LAB Practice Test - Commands and Arguments
     ```
     _This command provides a detailed description of the `ubuntu-sleeper` pod, including the command it executes._
     
-```
-Name:             ubuntu-sleeper
-Namespace:        default
-Priority:         0
-Service Account:  default
-Node:             controlplane/192.168.212.138
-Start Time:       Wed, 08 Jan 2025 04:15:47 +0000
-Labels:           <none>
-Annotations:      <none>
-Status:           Running
-IP:               10.42.0.9
-IPs:
-  IP:  10.42.0.9
-Containers:
-  ubuntu:
-    Container ID:  containerd://c9ad605d45be994c54ba99d280fc16de71a6db73d6f8d015494eac2a95f85bc9
-    Image:         ubuntu
-    Image ID:      docker.io/library/ubuntu@sha256:80dd3c3b9c6cecb9f1667e9290b3bc61b78c2678c02cbdae5f0fea92cc6734ab
-    Port:          <none>
-    Host Port:     <none>
-    Command: # The command executed by the container.
-      sleep
-      4800 # The argument passed to the sleep command.
-    State:          Running
-      Started:      Wed, 08 Jan 2025 04:15:49 +0000
-    Ready:          True
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-dh74f (ro)
-Conditions:
-  Type                        Status
-  PodReadyToStartContainers   True
-  Initialized                 True
-  Ready                       True
-  ContainersReady             True
-  PodScheduled                True
-Volumes:
-  kube-api-access-dh74f:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type    Reason     Age   From               Message
-  ----    ------     ----  ----               -------
-  Normal  Scheduled  37s   default-scheduler  Successfully assigned default/ubuntu-sleeper to controlplane
-  Normal  Pulling    37s   kubelet            Pulling image "ubuntu"
-  Normal  Pulled     36s   kubelet            Successfully pulled image "ubuntu" in 1.265s (1.265s including waiting). Image size: 29761377 bytes.
-  Normal  Created    36s   kubelet            Created container ubuntu
-  Normal  Started    36s   kubelet            Started container ubuntu
-```
+	```
+	Name:             ubuntu-sleeper
+	Namespace:        default
+	Priority:         0
+	Service Account:  default
+	Node:             controlplane/192.168.212.138
+	Start Time:       Wed, 08 Jan 2025 04:15:47 +0000
+	Labels:           <none>
+	Annotations:      <none>
+	Status:           Running
+	IP:               10.42.0.9
+	IPs:
+	  IP:  10.42.0.9
+	Containers:
+	  ubuntu:
+		Container ID:  containerd://c9ad605d45be994c54ba99d280fc16de71a6db73d6f8d015494eac2a95f85bc9
+		Image:         ubuntu
+		Image ID:      docker.io/library/ubuntu@sha256:80dd3c3b9c6cecb9f1667e9290b3bc61b78c2678c02cbdae5f0fea92cc6734ab
+		Port:          <none>
+		Host Port:     <none>
+		Command: # The command executed by the container.
+		  sleep
+		  4800 # The argument passed to the sleep command.
+		State:          Running
+		  Started:      Wed, 08 Jan 2025 04:15:49 +0000
+		Ready:          True
+		Restart Count:  0
+		Environment:    <none>
+		Mounts:
+		  /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-dh74f (ro)
+	Conditions:
+	  Type                        Status
+	  PodReadyToStartContainers   True
+	  Initialized                 True
+	  Ready                       True
+	  ContainersReady             True
+	  PodScheduled                True
+	Volumes:
+	  kube-api-access-dh74f:
+		Type:                    Projected (a volume that contains injected data from multiple sources)
+		TokenExpirationSeconds:  3607
+		ConfigMapName:           kube-root-ca.crt
+		ConfigMapOptional:       <nil>
+		DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+								 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type    Reason     Age   From               Message
+	  ----    ------     ----  ----               -------
+	  Normal  Scheduled  37s   default-scheduler  Successfully assigned default/ubuntu-sleeper to controlplane
+	  Normal  Pulling    37s   kubelet            Pulling image "ubuntu"
+	  Normal  Pulled     36s   kubelet            Successfully pulled image "ubuntu" in 1.265s (1.265s including waiting). Image size: 29761377 bytes.
+	  Normal  Created    36s   kubelet            Created container ubuntu
+	  Normal  Started    36s   kubelet            Started container ubuntu
+	```
 
-_The `ubuntu-sleeper` pod uses the `ubuntu` image and executes the command `sleep 4800`, meaning the container will sleep for 4800 seconds._
+	The `ubuntu-sleeper` pod uses the `ubuntu` image and executes the command `sleep 4800`, meaning the container will sleep for 4800 seconds._
 
-Here's a YAML definition for a pod demonstrating `command` usage:
+	Here's a YAML definition for a pod demonstrating `command` usage:
 
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  name: vi
-  namespace: default
-spec:
-  containers:
-  - name : ubuntu-container
-    image: ubuntu
-    command: # Defines the command to be executed.
-    - "sleep" # The primary command.
-    - "5000" # Argument for the command.
-```
+	```
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: vi
+	  namespace: default
+	spec:
+	  containers:
+	  - name : ubuntu-container
+		image: ubuntu
+		command:            # Defines the command to be executed.
+		- "sleep"           # The primary command.
+		- "5000"            # Argument for the command.
+	```
 
-**NOTE**: The commands should be in a string array. _This pod `vi` runs an `ubuntu` container that executes `sleep 5000`, making the container sleep for 5000 seconds._
+	**NOTE**: The commands should be in a string array. This pod `vi` runs an `ubuntu` container that executes `sleep 5000`, making the container sleep for 5000 seconds._
 
-Here's another YAML definition for a pod demonstrating `command` usage with a different string array representation:
+	Here's another YAML definition for a pod demonstrating `command` usage with a different string array representation:
 
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  name: ubuntu-sleeper-3
-spec:
-  containers:
-  - name: ubuntu
-    image: ubuntu
-    command: ["sleep","1200"] # Another way to represent a string array for command.
-```
+	```
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: ubuntu-sleeper-3
+	spec:
+	  containers:
+	  - name: ubuntu
+		image: ubuntu
+		command: ["sleep","1200"] # Another way to represent a string array for command.
+	```
 
-**NOTE**: The commands should be in a string array, here is another way to represent string array. _This pod `ubuntu-sleeper-3` also runs an `ubuntu` container, but sleeps for 1200 seconds._
+	**NOTE**: The commands should be in a string array, here is another way to represent string array. This pod `ubuntu-sleeper-3` also runs an `ubuntu` container, but sleeps for 1200 seconds.
 
 *   **Edit a pod and force replace it:**
     ```
@@ -672,298 +676,301 @@ spec:
     ```
     _The `k edit` command allows for interactive editing of a live pod. `k replace --force -f` then forces an update to the pod using the modified definition from the temporary file. This is useful for applying changes that are not directly editable on a running pod, as it deletes and recreates the pod._
 
-Here are examples of Dockerfiles demonstrating `ENTRYPOINT` and `CMD`:
+	Here are examples of Dockerfiles demonstrating `ENTRYPOINT` and `CMD`:
 
-**Dockerfile 1 (using ENTRYPOINT):**
+	**Dockerfile 1 (using ENTRYPOINT):**
 
-```
-FROM python:3.6-alpine
-RUN pip install flask
-COPY . /opt/
-EXPOSE 8080
-WORKDIR /opt
-ENTRYPOINT ["python", "app.py"] # Defines the executable for the container.
-```
+	```
+	FROM python:3.6-alpine
+	RUN pip install flask
+	COPY . /opt/
+	EXPOSE 8080
+	WORKDIR /opt
+	ENTRYPOINT ["python", "app.py"] # Defines the executable for the container.
+	```
 
-_In this Dockerfile, `ENTRYPOINT ["python", "app.py"]` means that `python app.py` will be the command executed when the container starts. Any `CMD` specified would be passed as arguments to this entrypoint._
+	In this Dockerfile, `ENTRYPOINT ["python", "app.py"]` means that `python app.py` will be the command executed when the container starts. Any `CMD` specified would be passed as arguments to this entrypoint._
 
-**Dockerfile 2 (using ENTRYPOINT and CMD):**
+	**Dockerfile 2 (using ENTRYPOINT and CMD):**
 
-```
-FROM python:3.6-alpine
-RUN pip install flask
-COPY . /opt/
-EXPOSE 8080
-WORKDIR /opt
-ENTRYPOINT ["python", "app.py"] # Defines the executable.
-CMD ["--color", "red"] # Provides default arguments to the ENTRYPOINT.
-```
+	```
+	FROM python:3.6-alpine
+	RUN pip install flask
+	COPY . /opt/
+	EXPOSE 8080
+	WORKDIR /opt
+	ENTRYPOINT ["python", "app.py"] # Defines the executable.
+	CMD ["--color", "red"] # Provides default arguments to the ENTRYPOINT.
+	```
 
-_Here, `ENTRYPOINT` is `python app.py`, and `CMD` provides default arguments `--color red`. So the effective command when the container starts will be `python app.py --color red`._
+	Here, `ENTRYPOINT` is `python app.py`, and `CMD` provides default arguments `--color red`. So the effective command when the container starts will be `python app.py --color red`._
 
-Here's a YAML definition for a pod demonstrating `command` and `args` usage:
+	Here's a YAML definition for a pod demonstrating `command` and `args` usage:
 
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  name: webapp-green
-  labels:
-      name: webapp-green
-spec:
-  containers:
-  - name: simple-webapp
-    image: kodekloud/webapp-color
-    command: ["python", "app.py"] # Overrides the Dockerfile's ENTRYPOINT.
-    args: ["--color", "pink"] # Overrides the Dockerfile's CMD and are arguments for the command.
-```
+	```
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: webapp-green
+	  labels:
+		  name: webapp-green
+	spec:
+	  containers:
+	  - name: simple-webapp
+		image: kodekloud/webapp-color
+		command: ["python", "app.py"] # Overrides the Dockerfile's ENTRYPOINT.
+		args: ["--color", "pink"] # Overrides the Dockerfile's CMD and are arguments for the command.
+	```
 
-_This pod `webapp-green` runs the `kodekloud/webapp-color` image. It explicitly sets the `command` to `["python", "app.py"]` and `args` to `["--color", "pink"]`, effectively running `python app.py --color pink` inside the container._
+	This pod `webapp-green` runs the `kodekloud/webapp-color` image. It explicitly sets the `command` to `["python", "app.py"]` and `args` to `["--color", "pink"]`, effectively running `python app.py --color pink` inside the container._
 
 *   **Generate a pod YAML with `run` and `dry-run`:**
     ```
     k run webapp-green --image=kodekloud/webapp-color -o yaml --dry-run=client > webapp-green.yaml
     ```
-    _This command uses `kubectl run` to generate a YAML manifest for a pod named `webapp-green` with the specified image, but it does not create the pod on the cluster (`--dry-run=client`). The output is directed to `webapp-green.yaml`._
+    This command uses `kubectl run` to generate a YAML manifest for a pod named `webapp-green` with the specified image, but it does not create the pod on the cluster (`--dry-run=client`). The output is directed to `webapp-green.yaml`._
     
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  creationTimestamp: null
-  labels:
-    run: webapp-green
-  name: webapp-green
-spec:
-  containers:
-  - image: kodekloud/webapp-color
-    name: webapp-green
-    args: ["--color=green"] # Arguments passed to the container's command/entrypoint. ["--color", "green"] even this is correct
-```
+	```
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  creationTimestamp: null
+	  labels:
+		run: webapp-green
+	  name: webapp-green
+	spec:
+	  containers:
+	  - image: kodekloud/webapp-color
+		name: webapp-green
+		args: ["--color=green"] # Arguments passed to the container's command/entrypoint. ["--color", "green"] even this is correct
+	```
 
-_This generated YAML shows how to pass arguments to a container using the `args` field. Both `["--color=green"]` and `["--color", "green"]` are valid ways to specify arguments._
+	This generated YAML shows how to pass arguments to a container using the `args` field. Both `["--color=green"]` and `["--color", "green"]` are valid ways to specify arguments._
 
-LAB Practice Test - ConfigMaps
-------------------------------
+	#LAB Practice Test - ConfigMaps
+	------------------------------
 
-Here's a YAML definition for a pod using environment variables directly:
+	Here's a YAML definition for a pod using environment variables directly:
 
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    name: webapp-color
-  name: webapp-color
-  namespace: default
-spec:
-  containers:
-  - env: # Defines environment variables for the container.
-    - name: APP_COLOR # Name of the environment variable.
-      value: green # Hardcoded value for the environment variable.
-    name: webapp-color
-    image: kodekloud/webapp-color
-```
+	```
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  labels:
+		name: webapp-color
+	  name: webapp-color
+	  namespace: default
+	spec:
+	  containers:
+	  - env:                                                 # Defines environment variables for the container.
+		- name: APP_COLOR                                    # Name of the environment variable.
+		  value: green                                       # Hardcoded value for the environment variable.
+		name: webapp-color
+		image: kodekloud/webapp-color
+	```
 
-**NOTE TO MYSELF**: check why the sequence of `-env` matters here. _This pod `webapp-color` runs an application that uses the `APP_COLOR` environment variable, setting its value directly to `green`._
+    **NOTE TO MYSELF**: check why the sequence of `-env` matters here. _This pod `webapp-color` runs an application that uses the `APP_COLOR` environment variable, setting its value directly to `green`._
 
 *   **Create a ConfigMap from literals:**
+
     ```
     k create configmap webapp-config-map --from-literal=APP_COLOR=darkblue --from-literal=APP_OTHER=disregard
     ```
-    _This imperative command creates a ConfigMap named `webapp-config-map` and populates it with two key-value pairs: `APP_COLOR=darkblue` and `APP_OTHER=disregard`._
+    This imperative command creates a ConfigMap named `webapp-config-map` and populates it with two key-value pairs: `APP_COLOR=darkblue` and `APP_OTHER=disregard`._
 
-Here's the YAML of the created ConfigMap:
+	Here's the YAML of the created ConfigMap:
 
-```
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: webapp-config-map
-  namespace: default
-data: # Data section for key-value pairs.
-  APP_COLOR: darkblue
-  APP_OTHER: disregard
-```
+	```
+	apiVersion: v1
+	kind: ConfigMap
+	metadata:
+	  name: webapp-config-map
+	  namespace: default
+	data: # Data section for key-value pairs.
+	  APP_COLOR: darkblue
+	  APP_OTHER: disregard
+	```
 
-_This YAML shows the structure of the ConfigMap `webapp-config-map` with its defined data._
+	This YAML shows the structure of the ConfigMap `webapp-config-map` with its defined data._
 
-Here's a YAML definition for a pod consuming a ConfigMap:
+	Here's a YAML definition for a pod consuming a ConfigMap:
 
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    name: webapp-color
-  name: webapp-color
-  namespace: default
-spec:
-  containers:
-  - env: # Defines environment variables for the container.
-    - name: APP_COLOR # Name of the environment variable.
-      valueFrom: # Specifies that the value comes from a source.
-       configMapKeyRef: # Refers to a key within a ConfigMap.
-         name: webapp-config-map # Name of the ConfigMap.
-         key: APP_COLOR # Key within the ConfigMap whose value will be used.
-    image: kodekloud/webapp-color
-    name: webapp-color
-```
+	```
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  labels:
+		name: webapp-color
+	  name: webapp-color
+	  namespace: default
+	spec:
+	  containers:
+	  - env: 											# Defines environment variables for the container.
+		- name: APP_COLOR 								# Name of the environment variable.
+		  valueFrom: 									# Specifies that the value comes from a source.
+		   configMapKeyRef: 							# Refers to a key within a ConfigMap.
+			 name: webapp-config-map 					# Name of the ConfigMap.
+			 key: APP_COLOR 							# Key within the ConfigMap whose value will be used.
+		image: kodekloud/webapp-color
+		name: webapp-color
+	```
 
-_This pod `webapp-color` now gets its `APP_COLOR` environment variable from the `APP_COLOR` key within the `webapp-config-map` ConfigMap._
+	This pod `webapp-color` now gets its `APP_COLOR` environment variable from the `APP_COLOR` key within the `webapp-config-map` ConfigMap._
 
-LAB Practice Test - Security Contexts
--------------------------------------
+	#LAB Practice Test - Security Contexts
+	-------------------------------------
 
-Quick Note: Security context can be set at the container level OR at the pod level.
+	Quick Note: Security context can be set at the container level OR at the pod level.
 
-Here's an example of setting security context at the pod level:
+	Here's an example of setting security context at the pod level:
 
-```
-spec:
-  securityContext: # Security context applied to all containers in the pod.
-    runAsUser: 1000 # Specifies the UID to run the process as.
-    runAsGroup: 3000 # Specifies the GID to run the primary process of the container as.
-    fsGroup: 2000 # Specifies the GID for the pod's volume and any files created in that volume.
-    supplementalGroups: [4000] # Supplemental groups added to the container's process.
-```
+	```
+	spec:
+	  securityContext: 						     # Security context applied to all containers in the pod.
+		runAsUser: 1000							 # Specifies the UID to run the process as.
+		runAsGroup: 3000                         # Specifies the GID to run the primary process of the container as.
+		fsGroup: 2000                            # Specifies the GID for the pod's volume and any files created in that volume.
+		supplementalGroups: [4000]               # Supplemental groups added to the container's process.
+	```
 
-_This snippet demonstrates how to apply security settings globally to all containers within a pod._
+	This snippet demonstrates how to apply security settings globally to all containers within a pod._
 
-Here's an example of a multi-container pod with security context set at both pod and container levels:
+	Here's an example of a multi-container pod with security context set at both pod and container levels:
 
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  name: multi-pod
-spec:
-  securityContext: # Pod-level security context.
-    runAsUser: 1001
-  containers:
-  - image: ubuntu
-    name: web
-    command: ["sleep", "5000"]
-    securityContext: # Container-level security context. This overrides pod-level setting for this container.
-      runAsUser: 1002
-  - image: ubuntu
-    name: sidecar
-    command: ["sleep", "5000"]
-```
+	```
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: multi-pod
+	spec:
+	  securityContext: 								# Pod-level security context.
+		runAsUser: 1001
+	  containers:
+	  - image: ubuntu
+		name: web
+		command: ["sleep", "5000"]
+		securityContext: 							# Container-level security context. This overrides pod-level setting for this container.
+		  runAsUser: 1002
+	  - image: ubuntu
+		name: sidecar
+		command: ["sleep", "5000"]
+	```
 
-_In this `multi-pod` definition, the `web` container explicitly sets `runAsUser` to `1002`, overriding the pod-level `runAsUser` of `1001`. The `sidecar` container will inherit the pod-level `runAsUser` of `1001` as it doesn't specify its own._
+	In this `multi-pod` definition, the `web` containerexplicitly sets `runAsUser` to `1002`, overriding the pod-level `runAsUser` of `1001`. The `sidecar` container will inherit the pod-level `runAsUser` of `1001` as it doesn't specify its own._
 
 *   **Update pod `ubuntu-sleeper` to run as Root user and with the `SYS_TIME` capability.** **NOTE**: By default, containers are run by root unless specified otherwise.
     
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    run: ubuntu-sleeper
-  name: ubuntu-sleeper
-spec:
-  containers:
-  - image: ubuntu
-    name: ubuntu-sleeper
-    command: ["sleep", "5000"]
-    securityContext: # Container-level security context.
-      capabilities: # Defines specific capabilities to add or drop.
-        add: ["SYS_TIME"] # Adds the SYS_TIME capability, allowing modification of the system clock.
-```
+	```
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  labels:
+		run: ubuntu-sleeper
+	  name: ubuntu-sleeper
+	spec:
+	  containers:
+	  - image: ubuntu
+		name: ubuntu-sleeper
+		command: ["sleep", "5000"]
+		securityContext: # Container-level security context.
+		  capabilities: # Defines specific capabilities to add or drop.
+			add: ["SYS_TIME"] # Adds the SYS_TIME capability, allowing modification of the system clock.
+	```
 
-_This YAML modifies the `ubuntu-sleeper` pod to run its container with the `SYS_TIME` capability, allowing it to adjust the system time._
+	This YAML modifies the `ubuntu-sleeper` pod to run its container with the `SYS_TIME` capability, allowing it to adjust the system time._
 
-LAB Practice Test - Service Accounts
-------------------------------------
+	#LAB Practice Test - Service Accounts
+	------------------------------------
 
 *   **Describe a Service Account:**
+
     ```
     k describe sa default
     ```
-    _This command provides a description of the `default` Service Account in the current namespace._
     
-```
-Name:                default
-Namespace:           default
-Labels:              <none>
-Annotations:         <none>
-Image pull secrets:  <none>
-Mountable secrets:   <none>
-Tokens:              <none>
-Events:              <none>
-```
+	This command provides a description of the `default` Service Account in the current namespace._
+    
+	```
+	Name:                default
+	Namespace:           default
+	Labels:              <none>
+	Annotations:         <none>
+	Image pull secrets:  <none>
+	Mountable secrets:   <none>
+	Tokens:              <none>
+	Events:              <none>
+	```
 
-_This output shows the basic details of the `default` Service Account._
+	This output shows the basic details of the `default` Service Account._
 
 *   **Get Service Account YAML:**
     ```
     k get serviceaccount default -o yaml
     ```
-    _This command retrieves the YAML definition of the `default` Service Account._
+    This command retrieves the YAML definition of the `default` Service Account.
     
-```
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  creationTimestamp: "2025-01-09T00:34:17Z"
-  name: default
-  namespace: default
-  resourceVersion: "327"
-  uid: 99f5125c-4edd-4318-8858-e426754293d5
-```
+	```
+	apiVersion: v1
+	kind: ServiceAccount
+	metadata:
+	  creationTimestamp: "2025-01-09T00:34:17Z"
+	  name: default
+	  namespace: default
+	  resourceVersion: "327"
+	  uid: 99f5125c-4edd-4318-8858-e426754293d5
+	```
 
-_This YAML confirms the existence and basic metadata of the `default` Service Account._
+	This YAML confirms the existence and basic metadata of the `default` Service Account._
 
-_Tokens are created here: `/var/run/secrets/kubernetes.io/serviceaccount/token`._
+	Tokens are created here: `/var/run/secrets/kubernetes.io/serviceaccount/token`.
 
-_Role Binding binds a role to a service account._
+	Role Binding binds a role to a service account._
 
-Here's a YAML example of a Role and RoleBinding:
+	Here's a YAML example of a Role and RoleBinding:
 
-```
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: read-pods
-  namespace: default
-subjects:
-- kind: ServiceAccount # Specifies the type of subject.
-  name: dashboard-sa # Name of the Service Account.
-  namespace: default # Namespace of the Service Account.
-roleRef:
-  kind: Role # This must be Role or ClusterRole.
-  name: pod-reader # This must match the name of the Role or ClusterRole you wish to bind to.
-  apiGroup: rbac.authorization.k8s.io # API group for the role.
----
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  namespace: default
-  name: pod-reader # Name of the Role.
-rules: # Defines permissions for the role.
-- apiGroups:
-  - '' # Refers to the core API group.
-  resources:
-  - pods # Resource that this role has permissions over.
-  verbs: # Actions allowed on the resource.
-  - get
-  - watch
-  - list
-```
+	```
+	---
+	kind: RoleBinding
+	apiVersion: rbac.authorization.k8s.io/v1
+	metadata:
+	  name: read-pods
+	  namespace: default
+	subjects:
+	- kind: ServiceAccount # Specifies the type of subject.
+	  name: dashboard-sa # Name of the Service Account.
+	  namespace: default # Namespace of the Service Account.
+	roleRef:
+	  kind: Role # This must be Role or ClusterRole.
+	  name: pod-reader # This must match the name of the Role or ClusterRole you wish to bind to.
+	  apiGroup: rbac.authorization.k8s.io # API group for the role.
+	---
+	kind: Role
+	apiVersion: rbac.authorization.k8s.io/v1
+	metadata:
+	  namespace: default
+	  name: pod-reader # Name of the Role.
+	rules: # Defines permissions for the role.
+	- apiGroups:
+	  - '' # Refers to the core API group.
+	  resources:
+	  - pods # Resource that this role has permissions over.
+	  verbs: # Actions allowed on the resource.
+	  - get
+	  - watch
+	  - list
+	```
 
-_This configuration creates a `pod-reader` Role that allows `get`, `watch`, and `list` operations on pods in the `default` namespace. It then creates a `read-pods` RoleBinding that grants these permissions to the `dashboard-sa` Service Account._
+	This configuration creates a `pod-reader` Role that allows `get`, `watch`, and `list` operations on pods in the `default` namespace. It then creates a `read-pods` RoleBinding that grants these permissions to the `dashboard-sa` Service Account._
 
-*   **Command to generate a token for a created service account:**
-    ```
-    kubectl create token dashboard-sa
-    ```
-    _This command generates a new token for the `dashboard-sa` Service Account. This token can be used for authentication._
+	*   **Command to generate a token for a created service account:**
+		```
+		kubectl create token dashboard-sa
+		```
+		_This command generates a new token for the `dashboard-sa` Service Account. This token can be used for authentication._
 
-_Service account should be in the same namespace as the RoleBinding._
+	Service account should be in the same namespace as the RoleBinding._
 
-LAB Practice Test - Secrets
+#LAB Practice Test - Secrets
 ---------------------------
 
 *   **Command to get all secrets:**
@@ -990,7 +997,7 @@ LAB Practice Test - Secrets
     metadata:
       name: db-secret
     data: # Data section where values are base64 encoded.
-      DB_Host: c3FsMDE=   # automatically base64Encoded when created with imperative command
+      DB_Host: c3FsMDE=                            # automatically base64Encoded when created with imperative command
       DB_Password: cGFzc3dvcmQxMjM=
       DB_User: cm9vdA==
     ```
@@ -1009,12 +1016,12 @@ LAB Practice Test - Secrets
       containers:
       - name: webapp
         image: kodekloud/simple-webapp-mysql
-        env: # Defines environment variables for the container.
-        - name: DB_User # Name of the environment variable.
-          valueFrom: # Specifies that the value comes from a source.
-            secretKeyRef: # Refers to a key within a Secret.
-              name: db-secret # Name of the Secret.
-              key: DB_User # Key within the Secret whose value will be used.
+        env:                                         # Defines environment variables for the container.
+        - name: DB_User                              # Name of the environment variable.
+          valueFrom:                                 # Specifies that the value comes from a source.
+            secretKeyRef:                            # Refers to a key within a Secret.
+              name: db-secret                        # Name of the Secret.
+              key: DB_User                           # Key within the Secret whose value will be used.
         - name: DB_Host
           valueFrom:
             secretKeyRef:
@@ -1046,13 +1053,14 @@ LAB Practice Test - Secrets
       - image: kodekloud/simple-webapp-mysql
         imagePullPolicy: Always
         name: webapp
-        envFrom: # Specifies that environment variables should be populated from a source.
-        - secretRef: # Refers to a Secret.
-            name: db-secret # Name of the Secret from which to take all key-value pairs as environment variables.
+        envFrom:                                   # Specifies that environment variables should be populated from a source.
+        - secretRef:                               # Refers to a Secret.
+            name: db-secret                        # Name of the Secret from which to take all key-value pairs as environment variables.
     ```
-    _This `webapp-pod` definition uses `envFrom` to inject all key-value pairs from the `db-secret` as environment variables into the `webapp` container. This is a more concise and recommended approach._
+    
+	This `webapp-pod` definition uses `envFrom` to inject all key-value pairs from the `db-secret` as environment variables into the `webapp` container. This is a more concise and recommended approach._
 
-LAB Practice Test - Resource Requirements
+#LAB Practice Test - Resource Requirements
 -----------------------------------------
 
 ### Quick notes
@@ -1122,7 +1130,7 @@ Pod "example-conflict-with-limitrange-cpu" is invalid: spec.containers[0].resour
 
 _This error message indicates that the requested CPU (700m) for a container exceeds the allowed CPU limit defined by a `LimitRange` in the namespace, preventing the pod from being scheduled._
 
-LAB Practice Test - Taints and Toleration
+# LAB Practice Test - Taints and Toleration
 -----------------------------------------
 
 *   **Taints and Tolerations:**
@@ -1130,70 +1138,114 @@ LAB Practice Test - Taints and Toleration
     *   **Taints** are the opposite -- they allow a node to repel a set of pods.
     *   Taints and tolerations work together to ensure that pods are not scheduled onto inappropriate nodes. One or more taints are applied to a node; this marks that the node should not accept any pods that do not tolerate the taints.
 *   **To apply a taint:**
-    ```
+    
+	```bash 
     kubectl taint nodes node1 key1=value1:NoSchedule
     ```
-    _This command applies a taint with key `key1`, value `value1`, and `NoSchedule` effect to `node1`. This means no new pods will be scheduled on `node1` unless they have a matching toleration._
+	
+    This command applies a taint with key `key1`, value `value1`, and `NoSchedule` effect to `node1`. This means no new pods will be scheduled on `node1` unless they have a matching toleration.
+	
 *   **To remove a taint:**
-    ```
+    
+	```bash
     kubectl taint nodes node1 key1=value1:NoSchedule-
     ```
-    _The `-` at the end removes the specified taint from `node1`._
+    
+	The `-` at the end removes the specified taint from `node1`.
+	
 
-Here's a YAML definition for a pod with tolerations:
 
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  creationTimestamp: null
-  labels:
-    run: bee
-  name: bee
-spec:
-  containers:
-  - image: nginx
-    name: bee
-  tolerations: # Defines tolerations for taints on nodes.
-    - key : "spray" # Key of the taint to tolerate.
-      operator : "Equal" # Operator for matching the taint value.
-      value: "mortein" # Value of the taint to tolerate.
-      effect : NoSchedule # Effect of the taint (must match the taint's effect).
-```
+	Here's a YAML definition for a pod with tolerations:
+
+	```yaml
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  creationTimestamp: null
+	  labels:
+		run: bee
+	  name: bee
+	spec:
+	  containers:
+	  - image: nginx
+		name: bee
+	  tolerations:                                # Defines tolerations for taints on nodes.
+		- key : "spray"                           # Key of the taint to tolerate.
+		  operator : "Equal"                      # Operator for matching the taint value.
+		  value: "mortein"                        # Value of the taint to tolerate.
+		  effect : NoSchedule                     # Effect of the taint (must match the taint's effect).
+	```
 
 _This pod `bee` has a toleration for a taint with `key: spray`, `value: mortein`, and `effect: NoSchedule`. This means it can be scheduled on a node tainted with `spray=mortein:NoSchedule`._
 
 *   **Get nodes in all namespaces:**
-    ```
+    
+	```shell
     k get nodes --all-namespaces
     ```
     _This command lists all nodes across all namespaces._
 *   **Get services:**
-    ```
+    
+	```shell
     kubectl get service
     ```
     _This command lists all services in the current namespace._
 *   **Taint a node:**
-    ```
+    
+	```shell
     kubectl taint nodes node01 spray=mortein:NoSchedule
     ```
     _This command applies a taint `spray=mortein:NoSchedule` to `node01`, preventing pods without a matching toleration from being scheduled on it._
 *   **Run a pod:**
-    ```
+    
+	```shell
     k run mosquito --image=nginx
     ```
-    _This command attempts to run a new pod named `mosquito` with the `nginx` image._
+	This command attempts to run a new pod named `mosquito` with the `nginx` image._
     
-```
-Events:
-  Type     Reason            Age   From               Message
-  ----     ------            ----  ----               -------
-  Warning  FailedScheduling  56s   default-scheduler  0/2 nodes are available: 1 node(s) had untolerated taint {node-role.kubernetes.io/control-plane: }, 1 node(s) had untolerated taint {spray: mortein}. preemption: 0/2 nodes are available: 2 Preemption is not helpful for scheduling.
-```
+	```shell
+	Events:
+	  Type     Reason            Age   From               Message
+	  ----     ------            ----  ----               -------
+	  Warning  FailedScheduling  56s   default-scheduler  0/2 nodes are available: 1 node(s) had untolerated taint {node-role.kubernetes.io/control-plane: }, 1 node(s) had untolerated taint {spray: mortein}. preemption: 0/2 nodes are available: 2 Preemption is not helpful for scheduling.
+	```
 
-_This event log shows that the `mosquito` pod failed to schedule because both available nodes had untolerated taints: one had the `node-role.kubernetes.io/control-plane` taint (which pods usually don't tolerate by default) and the other had the `spray: mortein` taint that `mosquito` does not tolerate._
+	This event log shows that the `mosquito` pod failed to schedule because both available nodes had untolerated taints: one had the `node-role.kubernetes.io/control-plane` taint (which pods usually don't tolerate by default) and the other had the `spray: mortein` taint that `mosquito` does not tolerate.
+	
+	
+	
+	NOTE: The below command will list down all the tains on all the nodes
+	
+	```shell
+	# Command to get all nodes taints 
+	kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints	
+	```
+	
+	#### **Effect Value Breakdown:**
 
-LAB Practice Test - Node Affinity
+	- **NoSchedule**: (Hard) Don’t schedule unaffiliated pods on this node.
+		- *"Do not allow new pods here unless they can tolerate this taint."*
+	- **PreferNoSchedule**: (Soft) Try to avoid, but not a strict rule.
+		- *"Prefer not to schedule here, but allow if necessary."*
+	- **NoExecute**: Applies to both new pods and existing pods.
+		- New pods: Not scheduled unless tolerant.
+		- Existing pods: Are evicted UNLESS they tolerate the taint (possibly with tolerationSeconds).
+
+
+    #### **Tabular Summary (CKAD Reference)**
+
+	| Effect | Scheduling Impact | Running Pod Impact | Supported in Taint? | Supported in Toleration? |
+	| :-- | :-- | :-- | :-- | :-- |
+	| NoSchedule | New pods not scheduled unless tolerated | No impact | Yes | Yes |
+	| PreferNoSchedule | Scheduler avoids node unless necessary | No impact | Yes | Yes |
+	| NoExecute | New pods not scheduled unless tolerated | Non-tolerating pods evicted | Yes | Yes |
+
+**References:**
+
+- [Kubernetes Official Docs: Taints and Tolerations (v1.33)](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration)
+
+
+# LAB Practice Test - Node Affinity
 ---------------------------------
 
 Here's a YAML definition for a pod with `nodeAffinity`:
@@ -2652,4 +2704,259 @@ _This `ClusterRoleBinding` named `michelle-storage-admin` grants the `storage-ad
 
 
 ---
-Powered by [Gemini Exporter](https://www.geminiexporter.com)
+# Quick Notes
+
+
+## Kubernetes Node Scheduling Mechanisms
+
+| **Mechanism** | **When to Use** | **How it Works** | **Use Case Examples** | **Flexibility** |
+|---------------|-----------------|------------------|----------------------|-----------------|
+| **nodeSelector** | Simple node selection based on exact label match | Pods scheduled only on nodes with matching key-value labels | • Dev pods on dev nodes<br>• GPU workloads on GPU nodes<br>• Region-specific deployments| **Low** - Exact match only |
+| **Node Affinity** | Complex node selection with multiple conditions and preferences | Advanced rule-based scheduling with required/preferred conditions | • Multi-zone deployments<br>• Hardware-specific requirements<br>• Complex label combinations<br>• Soft/hard preferences  | **High** - Multiple operators, AND/OR logic |
+| **Taints** | Prevent pods from being scheduled on specific nodes (node repels pods) | Nodes marked with taints that repel pods without matching tolerations | • Dedicated nodes for specific workloads<br>• Master nodes (no regular pods)<br>• Maintenance mode<br>• Isolating problematic nodes | **Medium** - Works with tolerations |
+| **Tolerations** | Allow pods to be scheduled on tainted nodes (pod tolerates taint) | Pods with tolerations can be scheduled on nodes with matching taints | • System pods on master nodes<br>• Special workloads on dedicated nodes<br>• Pods that can handle node issues  | **Medium** - Must match taint keys/effects |
+
+
+# Detailed Explanation of Kubernetes Node Scheduling Examples
+
+## 1. nodeSelector Example
+
+```yaml
+spec:
+  nodeSelector:
+    environment: production
+    gpu: "true"
+```
+
+### What this does:
+- **Simple filtering**: This pod will ONLY be scheduled on nodes that have BOTH labels
+- **Exact match required**: The node must have `environment=production` AND `gpu=true` labels
+- **Binary decision**: Either the node matches ALL criteria or the pod won't be scheduled there
+
+### Step-by-step process:
+1. Kubernetes scheduler looks at all available nodes
+2. Filters out nodes that don't have `environment: production` label
+3. From remaining nodes, filters out those without `gpu: "true"` label
+4. Schedules pod on any remaining node that matches both criteria
+5. If no nodes match, pod remains in "Pending" state
+
+### Real-world scenario:
+```yaml
+# First, label your nodes:
+# kubectl label nodes gpu-node-1 environment=production
+# kubectl label nodes gpu-node-1 gpu=true
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ml-training-job
+spec:
+  nodeSelector:
+    environment: production
+    gpu: "true"
+  containers:
+  - name: tensorflow
+    image: tensorflow/tensorflow:latest-gpu
+```
+
+---
+
+## 2. Node Affinity Example
+
+```yaml
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: zone
+            operator: In
+            values: ["us-west-1a", "us-west-1b"]
+```
+
+### What this does:
+- **Flexible matching**: Pod can be scheduled on nodes in EITHER `us-west-1a` OR `us-west-1b` zones
+- **Operator-based logic**: Uses `In` operator to check if node's zone label matches any value in the list
+- **Required rule**: This is a hard requirement (pod won't be scheduled if no matching nodes exist)
+
+### Breaking down the components:
+- **`requiredDuringSchedulingIgnoredDuringExecution`**: Hard requirement during scheduling, but ignored if node changes after pod is running
+- **`nodeSelectorTerms`**: Array of terms (OR logic between terms)
+- **`matchExpressions`**: Array of expressions (AND logic within a term)
+- **`operator: In`**: Node label value must be in the specified list
+
+### Advanced example with multiple conditions:
+```yaml
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: zone
+            operator: In
+            values: ["us-west-1a", "us-west-1b"]
+          - key: instance-type
+            operator: NotIn
+            values: ["t2.micro", "t2.small"]
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        preference:
+          matchExpressions:
+          - key: zone
+            operator: In
+            values: ["us-west-1a"]
+```
+
+### Available operators:
+- **`In`**: Label value is in the list
+- **`NotIn`**: Label value is not in the list
+- **`Exists`**: Label key exists (regardless of value)
+- **`DoesNotExist`**: Label key doesn't exist
+- **`Gt`**: Label value is greater than specified value
+- **`Lt`**: Label value is less than specified value
+
+---
+
+## 3. Taints Example
+
+```yaml
+# Applied to Node
+spec:
+  taints:
+  - key: dedicated
+    value: gpu
+    effect: NoSchedule
+  - key: node-role.kubernetes.io/master
+    effect: NoSchedule
+```
+
+### What this does:
+- **Node-level restriction**: These taints are applied to a node to repel pods
+- **Two taints applied**: One custom taint for GPU dedication, one standard master node taint
+- **NoSchedule effect**: Prevents new pods from being scheduled (existing pods remain)
+
+### Taint effects explained:
+1. **`NoSchedule`**: New pods without matching tolerations won't be scheduled
+2. **`PreferNoSchedule`**: Scheduler tries to avoid placing pods, but not guaranteed
+3. **`NoExecute`**: Existing pods without tolerations are evicted, new ones rejected
+
+### How to apply taints:
+```bash
+# Taint a node for GPU workloads only
+kubectl taint nodes gpu-node-1 dedicated=gpu:NoSchedule
+
+# Taint master nodes (usually done automatically)
+kubectl taint nodes master-node node-role.kubernetes.io/master:NoSchedule
+
+# Remove a taint (notice the minus sign)
+kubectl taint nodes gpu-node-1 dedicated=gpu:NoSchedule-
+```
+
+### Real-world scenarios:
+- **Dedicated hardware**: Prevent regular workloads from using expensive GPU/SSD nodes
+- **Maintenance mode**: Taint nodes before maintenance to prevent new pods
+- **Problem nodes**: Taint nodes with hardware issues to isolate them
+- **Master nodes**: Prevent application pods from running on control plane nodes
+
+---
+
+## 4. Tolerations Example
+
+```yaml
+spec:
+  tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "gpu"
+    effect: "NoSchedule"
+  - key: "node-role.kubernetes.io/master"
+    effect: "NoSchedule"
+```
+
+### What this does:
+- **Pod-level permission**: Allows this pod to be scheduled on tainted nodes
+- **Matches taints**: First toleration matches the `dedicated=gpu:NoSchedule` taint
+- **Master access**: Second toleration allows scheduling on master nodes
+
+### Toleration operators:
+1. **`Equal`**: Taint key, value, and effect must match exactly
+2. **`Exists`**: Only taint key and effect need to match (ignores value)
+
+### Detailed breakdown:
+
+#### First toleration:
+```yaml
+- key: "dedicated"
+    operator: "Equal"
+    value: "gpu"
+    effect: "NoSchedule"
+```
+- Matches taint: `dedicated=gpu:NoSchedule`
+- Pod can be scheduled on nodes with this specific taint
+
+#### Second toleration:
+```yaml
+- key: "node-role.kubernetes.io/master"
+    effect: "NoSchedule"
+```
+- Operator defaults to "Equal" when not specified
+- Since no value is provided, it matches any taint with this key and effect
+- Allows pod to run on master nodes
+
+### Complete example with context:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-ml-job
+spec:
+  tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "gpu"
+    effect: "NoSchedule"
+  nodeSelector:
+    gpu: "true"
+  containers:
+  - name: training-container
+    image: tensorflow/tensorflow:latest-gpu
+    resources:
+      limits:
+        nvidia.com/gpu: 1
+```
+
+### Special toleration patterns:
+```yaml
+# Tolerate all taints (dangerous - use carefully)
+tolerations:
+- operator: "Exists"
+
+# Tolerate all taints with specific effect
+tolerations:
+- key: ""
+  operator: "Exists"
+  effect: "NoSchedule"
+
+# Tolerate for limited time (useful for temporary issues)
+tolerations:
+- key: "node.kubernetes.io/unreachable"
+  operator: "Exists"
+  effect: "NoExecute"
+  tolerationSeconds: 300
+```
+
+## How They Work Together
+
+### Complete workflow example:
+1. **Administrator** taints GPU nodes: `kubectl taint nodes gpu-node dedicated=gpu:NoSchedule`
+2. **Regular pods** cannot be scheduled on GPU nodes (due to taint)
+3. **ML workload pods** include tolerations for `dedicated=gpu:NoSchedule`
+4. **ML pods** can now be scheduled on GPU nodes
+5. **Optional**: Add nodeSelector or affinity to ensure ML pods ONLY go to GPU nodes
+
+This creates a dedicated pool of resources while maintaining flexibility and control over pod placement.
+
+
+

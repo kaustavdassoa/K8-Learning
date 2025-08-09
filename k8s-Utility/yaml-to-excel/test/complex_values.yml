@@ -1,0 +1,104 @@
+# Global settings for the Helm chart
+global:
+  app:
+    name: myapp                 # Application name
+    version: 1.2.3               # Application version
+    environment: dev             # Environment name (dev, staging, prod)
+  image:
+    repository: myrepo/myapp     # Docker image repository
+    tag: latest                  # Image tag
+    pullPolicy: IfNotPresent     # Kubernetes image pull policy
+
+# Service configuration
+service:
+  type: ClusterIP                # Kubernetes service type
+  port: 8080                     # Service port
+  annotations:                   # Service annotations
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+
+# Ingress configuration
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: myapp.example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+        - path: /api
+          pathType: Prefix
+  tls:
+    - secretName: myapp-tls
+      hosts:
+        - myapp.example.com
+
+# Database configuration
+database:
+  type: postgresql
+  host: db.myapp.svc.cluster.local
+  port: 5432
+  credentials:
+    username: admin
+    password: changeme           # TODO: Change in production
+  replicas: 2
+  connectionPool:
+    maxConnections: 50
+    minConnections: 5
+    timeouts:
+      connect: 5s
+      idle: 300s
+
+# Feature flags
+features:
+  logging: true
+  metrics: true
+  tracing: false
+  betaFeatures:
+    - featureA
+    - featureB
+    - featureC
+
+# Pod configuration
+pod:
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+  nodeSelector:
+    disktype: ssd
+  tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "myapp"
+      effect: "NoSchedule"
+
+# Complex nested list example
+servers:
+  - name: server1
+    ip: 10.0.0.1
+    roles:
+      - app
+      - db
+    metadata:
+      owner: teamA
+      location:
+        country: US
+        region: us-west
+  - name: server2
+    ip: 10.0.0.2
+    roles:
+      - app
+    metadata:
+      owner: teamB
+      location:
+        country: IN
+        region: ap-south
+
+# Empty section for future overrides
+overrides: {}
