@@ -1,0 +1,6 @@
+{
+    "dev": "./test/airflow_values.yaml",
+    "sit": "./test/airflow_values.yaml",
+    "uat": "./test/airflow_values.yaml",
+    "prod": "./test/airflow_diff_values.yaml"
+}
