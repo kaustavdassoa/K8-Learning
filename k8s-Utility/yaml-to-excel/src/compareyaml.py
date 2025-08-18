@@ -222,16 +222,18 @@ def write_excel_with_highlight(df: pd.DataFrame, output_path: str, env_names: Li
         unique_vals = set()
         for v in values:
           if v == "" or v is None:
-             unique_vals.add("__MISSING__") #Channged made to highlight missing values 
+             unique_vals.add("__MISSING__") #Channged made to highlight missing values (including blanks) 
           else:   
             unique_vals.add(str(v).strip())
         if len(unique_vals) > 1:
              for env in env_names:
                 col = env_col_indexes[env]
                 cell = ws.cell(row=r, column=col)
-                # highlight only non-empty cells, but per requirement we can highlight all env cells (including blanks)
-                # We will highlight non-blank cells; if you prefer highlighting blanks too, remove the condition.
-                # Here we'll highlight all env cells that are not equal across envs (so non-blank or blank if others differ).
+                # Highlight all environment cells in the row (including blanks)     
+                # whenever there is a difference between environments. 
+                # A difference can be caused by either:
+                #   - Different non-blank values across environments, OR
+                #   - A value being present in one environment but missing in another.
                 cell.fill = HIGHLIGHT_FILL
 
     # Save workbook
