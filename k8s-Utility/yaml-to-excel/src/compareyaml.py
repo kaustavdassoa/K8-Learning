@@ -39,6 +39,23 @@ HIGHLIGHT_FILL = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type
 HEADER_FONT = Font(bold=True)
 # -----------------------------------
 
+def row_has_difference(row):
+    values = list(row)
+    # If all are NaN → no difference
+    if all(pd.isna(v) for v in values):
+        return False
+    # Compare each value against the first
+    first_val = values[0]
+    for val in values[1:]:
+        # Case 1: one is NaN, other is not
+        if pd.isna(val) != pd.isna(first_val):
+            return True
+        # Case 2: values are not equal
+        if not pd.isna(val) and val != first_val:
+            return True
+    return False
+
+
 def usage_and_exit(msg: str = None, code: int = 1):
     if msg:
         print(f"Error: {msg}")
@@ -203,12 +220,13 @@ def write_excel_with_highlight(df: pd.DataFrame, output_path: str, env_names: Li
         non_blank_vals = [v for v in values if v != ""]
         # Determine unique set (use string form for robust comparison)
         unique_vals = set()
-        for v in non_blank_vals:
-            # Normalize types: bool/int/float -> str, preserve strings as-is
+        for v in values:
+          if v == "" or v is None:
+             unique_vals.add("__MISSING__") #Channged made to highlight missing values 
+          else:   
             unique_vals.add(str(v).strip())
-        # If more than one unique non-blank value => highlight the cells for that row
         if len(unique_vals) > 1:
-            for env in env_names:
+             for env in env_names:
                 col = env_col_indexes[env]
                 cell = ws.cell(row=r, column=col)
                 # highlight only non-empty cells, but per requirement we can highlight all env cells (including blanks)
